@@ -7,47 +7,38 @@ from snippets.serializers import UserSerializer
 from snippets.permissions import IsOwnerOrReadOnly
 from rest_framework import renderers
 from rest_framework.decorators import api_view
-#from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework import renderers
 from rest_framework.response import Response
+from rest_framework import viewsets
+from rest_framework.decorators import link
 
 
-class SnippetList(generics.ListCreateAPIView):
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+class SnippetViewSet(viewsets.ModelViewSet):
+    """
+    This viewset automatically provides `list`, `create`, `retrieve`,
+    `update` and `destroy` actions.
+
+    Additionally we also provide an extra `highlight` action.
+    """
     queryset = Snippet.objects.all()
     serializer_class = SnippetSerializer
-    def pre_save(self, obj):
-        obj.owner = self.request.user
-
-class SnippetDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,
-                      IsOwnerOrReadOnly,)
-    queryset = Snippet.objects.all()
-    serializer_class = SnippetSerializer
-    def pre_save(self, obj):
-        obj.owner = self.request.user
+                          IsOwnerOrReadOnly,)
 
-class UserList(generics.ListAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-
-
-class UserDetail(generics.RetrieveAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-
-class SnippetHighlight(generics.GenericAPIView):
-    queryset = Snippet.objects.all()
-    renderer_classes = (renderers.StaticHTMLRenderer,)
-
-    def get(self, request, *args, **kwargs):
+    @link(renderer_classes=[renderers.StaticHTMLRenderer])
+    def highlight(self, request, *args, **kwargs):
         snippet = self.get_object()
         return Response(snippet.highlighted)
 
-@api_view(('GET',))
-def api_root(request, format=None):
-    return Response({
-        'users': reverse('user-list', request=request, format=format),
-        'snippets': reverse('snippet-list', request=request, format=format)
-    })
+    def pre_save(self, obj):
+        obj.owner = self.request.user
+
+class UserViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    This viewset automatically provides `list` and `detail` actions.
+    """
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
