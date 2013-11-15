@@ -180,3 +180,8 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
+
+#add pagination for API
+REST_FRAMEWORK = {
+    'PAGINATE_BY': 10
+}
