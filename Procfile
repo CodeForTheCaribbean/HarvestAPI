@@ -1,1 +1,1 @@
-web: gunicorn tutorial.wsgi
+web: gunicorn agriapi.wsgi
