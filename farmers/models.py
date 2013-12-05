@@ -13,7 +13,7 @@ STYLE_CHOICES = sorted((item, item) for item in get_all_styles())
 class Farmer(models.Model):
 
     farmer_idx = models.IntegerField(max_length=6)
-    farmer_id =  models.CharField(max_length=10, blank=False, default='')
+    farmer_id =  models.CharField(max_length=10, blank=False, default='', primary_key=True)
     first_name = models.CharField(max_length=100, blank=True, default='')
     last_name = models.CharField(max_length=100, blank=True, default='')
     alias = models.CharField(max_length=100, blank=True, default='')
