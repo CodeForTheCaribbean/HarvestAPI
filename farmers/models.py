@@ -43,3 +43,12 @@ class Farmer(models.Model):
 #                              full=True, **options)
 #    self.highlighted = highlight(self.code, lexer, formatter)
 #    super(Farmer, self).save(*args, **kwargs)
+
+class Receipt(models.Model):
+    farmer_idx = models.IntegerField(max_length=6)
+    receipt_no =  models.CharField(max_length=10, blank=False, default='')
+    rec_range1 = models.CharField(max_length=100, blank=True, default='')
+    rec_range2 = models.CharField(max_length=100, blank=True, default='')
+    investigation_status = models.CharField(max_length=100, blank=True, default='')
+    remarks = models.CharField(max_length=200, blank=True, default='')
+
