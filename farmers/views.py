@@ -26,13 +26,13 @@ class FarmerViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,
                           IsOwnerOrReadOnly,)
 
-    @link(renderer_classes=[renderers.StaticHTMLRenderer])
-    def highlight(self, request, *args, **kwargs):
-        farmer = self.get_object()
-        return Response(farmer.highlighted)
-
-    def pre_save(self, obj):
-        obj.owner = self.request.user
+#    @link(renderer_classes=[renderers.StaticHTMLRenderer])
+#    def highlight(self, request, *args, **kwargs):
+#        farmer = self.get_object()
+#        return Response(farmer.highlighted)
+#
+#    def pre_save(self, obj):
+#        obj.owner = self.request.user
 
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
     """

@@ -25,18 +25,8 @@ class Farmer(models.Model):
     dob = models.DateTimeField() 
 #    reg_date = models.DateTimeField() 
     agri_activity = models.CharField(max_length=150, blank=True, default='')
-#    owner = models.ForeignKey('auth.User', related_name='farmers')
-#_    created = models.DateTimeField(auto_now_add=True)
-#    title = models.CharField(max_length=100, blank=True, default='')
-#    code = models.TextField()
-#    linenos = models.BooleanField(default=False)
-#    language = models.CharField(choices=LANGUAGE_CHOICES,
-#                                default='python',
-#                                max_length=100)
-#    style = models.CharField(choices=STYLE_CHOICES,
-#                             default='friendly',
-#                             max_length=100)
-#    highlighted = models.TextField()
+    owner = models.ForeignKey('auth.User', related_name='farmers')
+#    created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         ordering = ('dob',)
