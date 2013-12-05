@@ -6,6 +6,7 @@ from rest_framework.routers import DefaultRouter
 router = DefaultRouter()
 router.register(r'farmers', views.FarmerViewSet)
 router.register(r'users', views.UserViewSet)
+router.register(r'receipts', views.ReceiptViewSet)
 
 # The API URLs are now determined automatically by the router.
 # Additionally, we include the login URLs for the browseable API.

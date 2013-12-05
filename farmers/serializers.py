@@ -1,6 +1,6 @@
 from django.forms import widgets
 from rest_framework import serializers
-from farmers.models import Farmer, LANGUAGE_CHOICES, STYLE_CHOICES
+from farmers.models import Farmer, Receipt , LANGUAGE_CHOICES, STYLE_CHOICES
 from django.contrib.auth.models import User
 
 class FarmerSerializer(serializers.HyperlinkedModelSerializer):
@@ -18,3 +18,11 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
         fields = ('url', 'username', 'farmers')
+        
+
+class ReceiptSerializer(serializers.HyperlinkedModelSerializer):
+	receipts = serializers.HyperlinkedRelatedField(many=True, view_name='receipt-detail')
+
+	class Meta:
+		model = Receipt
+		fields = ('farmer_idx', 'receipt_no', 'rec_range1', 'rec_range2', 'investigation_status', 'remarks')
