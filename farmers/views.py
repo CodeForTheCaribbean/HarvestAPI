@@ -1,5 +1,5 @@
-from farmers.models import Farmer
-from farmers.serializers import FarmerSerializer
+from farmers.models import Farmer, Receipt
+from farmers.serializers import FarmerSerializer, ReceiptSerializer
 from rest_framework import generics
 from rest_framework import permissions
 from django.contrib.auth.models import User
@@ -40,5 +40,12 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
     """
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+class ReceiptViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    This viewset automatically provides `list` and `detail` receipts.
+    """
+    queryset = Receipt.objects.all()
+    serializer_class = ReceiptSerializer
 
 
