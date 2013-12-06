@@ -10,7 +10,10 @@ router.register(r'receipts', views.ReceiptViewSet)
 
 # The API URLs are now determined automatically by the router.
 # Additionally, we include the login URLs for the browseable API.
+# Included docs URL to 'swagger' docs
 urlpatterns = patterns('',
     url(r'^', include(router.urls)),
+    url(r'^docs/', include('rest_framework_swagger.urls')),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+
 )
