@@ -25,6 +25,10 @@ class FarmerViewSet(viewsets.ModelViewSet):
     serializer_class = FarmerSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,
                           IsOwnerOrReadOnly,)
+    filter_fields = ('farmer_idx','farmer_id','first_name','last_name','alias','res_address', 'res_parish','tel_number','cell_number','verified_status','dob','agri_activity')
+
+
+
 
 #    @link(renderer_classes=[renderers.StaticHTMLRenderer])
 #    def highlight(self, request, *args, **kwargs):
@@ -47,5 +51,4 @@ class ReceiptViewSet(viewsets.ReadOnlyModelViewSet):
     """
     queryset = Receipt.objects.all()
     serializer_class = ReceiptSerializer
-
-
+    filter_fields = ('farmer_idx', 'receipt_no', 'rec_range1', 'rec_range2', 'investigation_status', 'remarks')
