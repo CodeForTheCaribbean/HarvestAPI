@@ -16,10 +16,9 @@ from rest_framework.decorators import link
 
 class FarmerViewSet(viewsets.ModelViewSet):
     """
-    This viewset automatically provides `list`, `create`, `retrieve`,
-    `update` and `destroy` actions.
+    This view set automatically provides `list`, `create`, `retrieve`,
+    `update` and `destroy` Farmers.
 
-    Additionally we also provide an extra `highlight` action.
     """
     queryset = Farmer.objects.all()
     serializer_class = FarmerSerializer
@@ -28,26 +27,16 @@ class FarmerViewSet(viewsets.ModelViewSet):
     filter_fields = ('farmer_idx','farmer_id','first_name','last_name','alias','res_address', 'res_parish','tel_number','cell_number','verified_status','dob','agri_activity')
 
 
-
-
-#    @link(renderer_classes=[renderers.StaticHTMLRenderer])
-#    def highlight(self, request, *args, **kwargs):
-#        farmer = self.get_object()
-#        return Response(farmer.highlighted)
-#
-#    def pre_save(self, obj):
-#        obj.owner = self.request.user
-
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
     """
-    This viewset automatically provides `list` and `detail` actions.
+    This view set automatically provides `list` and `detail`  on Users .
     """
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
 class ReceiptViewSet(viewsets.ReadOnlyModelViewSet):
     """
-    This viewset automatically provides `list` and `detail` receipts.
+    This view set automatically provides `list` and `detail` on Receipts.
     """
     queryset = Receipt.objects.all()
     serializer_class = ReceiptSerializer
