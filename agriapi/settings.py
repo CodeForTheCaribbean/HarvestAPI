@@ -184,5 +184,7 @@ STATICFILES_DIRS = (
 
 #add pagination for API
 REST_FRAMEWORK = {
-    'PAGINATE_BY': 10
+    'PAGINATE_BY': 10,
+    'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',)
+
 }
