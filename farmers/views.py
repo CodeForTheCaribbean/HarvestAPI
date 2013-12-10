@@ -34,7 +34,7 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
-class ReceiptViewSet(viewsets.ReadOnlyModelViewSet):
+class ReceiptViewSet(viewsets.ModelViewSet):
     """
     This view set automatically provides `list` and `detail` on Receipts.
     """
