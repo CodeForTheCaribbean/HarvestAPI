@@ -164,7 +164,7 @@ LOGGING = {
 #added for Heroku
 # Parse database configuration from $DATABASE_URL
 import dj_database_url
-DATABASES['default'] =  dj_database_url.config(default='postgres://uxboevirvptnpd:7sKjhYmykPqSOyegoOr9adPS3-@ec2-54-225-255-208.compute-1.amazonaws.com:5432/ddme7ea43v1qhk')
+DATABASES['default'] =  dj_database_url.config(default='postgres://agriapi:agriapi@localhost:5432/agriapi')
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
