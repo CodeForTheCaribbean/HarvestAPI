@@ -9,7 +9,7 @@ class FarmerSerializer(serializers.HyperlinkedModelSerializer):
                                                  view_name='receipt-detail')
     class Meta:
         model = Farmer
-        fields = ('url','farmer_id','farmer_idx','first_name','last_name','alias','res_address', 'res_parish','tel_number','cell_number','verified_status','dob','agri_activity','owner', 'receipts')
+        fields = ('url','farmer_id','farmer_idx','first_name','last_name','alias','res_address', 'res_parish','tel_number','cell_number','verified_status','dob','agri_activity','owner')
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -21,7 +21,8 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ReceiptSerializer(serializers.HyperlinkedModelSerializer):
+#    farmer = serializers.RelatedField() 
 
-	class Meta:
-		model = Receipt
-		fields = ('id','farmer_idx', 'receipt_no', 'rec_range1', 'rec_range2', 'investigation_status', 'remarks')
+    class Meta:
+        model = Receipt
+        fields = ('url','farmer', 'receipt_no', 'rec_range1', 'rec_range2', 'investigation_status', 'remarks')
