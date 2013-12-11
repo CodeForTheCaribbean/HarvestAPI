@@ -21,7 +21,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ReceiptSerializer(serializers.HyperlinkedModelSerializer):
-#    farmer = serializers.RelatedField() 
+#    farmer = serializers.RelatedField()
 
     class Meta:
         model = Receipt

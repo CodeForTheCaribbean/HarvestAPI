@@ -32,7 +32,7 @@ class Receipt(models.Model):
     investigation_status = models.CharField(max_length=100, null=True, default='')
     last_updated = models.DateTimeField(auto_now_add=True, null=True)
     remarks = models.CharField(max_length=200, null=True, default='')
-    farmer = models.ForeignKey(Farmer)   
+    farmer = models.ForeignKey(Farmer)
 
     class Meta:
         ordering = ('last_updated',)
