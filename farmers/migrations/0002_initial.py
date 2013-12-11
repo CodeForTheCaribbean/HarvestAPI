@@ -29,18 +29,23 @@ class Migration(SchemaMigration):
         # Adding model 'Receipt'
         db.create_table(u'farmers_receipt', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('farmer_idx', self.gf('django.db.models.fields.CharField')(max_length=100)),
+            ('farmer_idx', self.gf('django.db.models.fields.related.ForeignKey')(related_name='receipts', to=orm['farmers.Farmer'])),
             ('receipt_no', self.gf('django.db.models.fields.CharField')(default='', max_length=100)),
             ('rec_range1', self.gf('django.db.models.fields.CharField')(default='', max_length=100, null=True)),
             ('rec_range2', self.gf('django.db.models.fields.CharField')(default='', max_length=100, null=True)),
             ('investigation_status', self.gf('django.db.models.fields.CharField')(default='', max_length=100, null=True)),
             ('remarks', self.gf('django.db.models.fields.CharField')(default='', max_length=200, null=True)),
-            ('farmer', self.gf('django.db.models.fields.related.ForeignKey')(related_name='receipts', to=orm['farmers.Farmer'])),
         ))
         db.send_create_signal(u'farmers', ['Receipt'])
 
+        # Adding unique constraint on 'Receipt', fields ['receipt_no', 'farmer_idx']
+        db.create_unique(u'farmers_receipt', ['receipt_no', 'farmer_idx_id'])
+
 
     def backwards(self, orm):
+        # Removing unique constraint on 'Receipt', fields ['receipt_no', 'farmer_idx']
+        db.delete_unique(u'farmers_receipt', ['receipt_no', 'farmer_idx_id'])
+
         # Deleting model 'Farmer'
         db.delete_table(u'farmers_farmer')
 
@@ -102,9 +107,8 @@ class Migration(SchemaMigration):
             'verified_status': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '3', 'null': 'True'})
         },
         u'farmers.receipt': {
-            'Meta': {'object_name': 'Receipt'},
-            'farmer': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'receipts'", 'to': u"orm['farmers.Farmer']"}),
-            'farmer_idx': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'Meta': {'unique_together': "(('receipt_no', 'farmer_idx'),)", 'object_name': 'Receipt'},
+            'farmer_idx': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'receipts'", 'to': u"orm['farmers.Farmer']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'investigation_status': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '100', 'null': 'True'}),
             'rec_range1': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '100', 'null': 'True'}),

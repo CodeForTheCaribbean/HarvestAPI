@@ -38,14 +38,8 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal(u'farmers', ['Receipt'])
 
-        # Adding unique constraint on 'Receipt', fields ['receipt_no', 'farmer_idx']
-        db.create_unique(u'farmers_receipt', ['receipt_no', 'farmer_idx_id'])
-
 
     def backwards(self, orm):
-        # Removing unique constraint on 'Receipt', fields ['receipt_no', 'farmer_idx']
-        db.delete_unique(u'farmers_receipt', ['receipt_no', 'farmer_idx_id'])
-
         # Deleting model 'Farmer'
         db.delete_table(u'farmers_farmer')
 
@@ -107,7 +101,7 @@ class Migration(SchemaMigration):
             'verified_status': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '3', 'null': 'True'})
         },
         u'farmers.receipt': {
-            'Meta': {'unique_together': "(('receipt_no', 'farmer_idx'),)", 'object_name': 'Receipt'},
+            'Meta': {'object_name': 'Receipt'},
             'farmer_idx': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'receipts'", 'to': u"orm['farmers.Farmer']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'investigation_status': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '100', 'null': 'True'}),

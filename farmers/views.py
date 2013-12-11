@@ -40,4 +40,4 @@ class ReceiptViewSet(viewsets.ModelViewSet):
     """
     queryset = Receipt.objects.all()
     serializer_class = ReceiptSerializer
-    filter_fields = ('farmer_idx', 'receipt_no', 'rec_range1', 'rec_range2', 'investigation_status', 'remarks')
+    filter_fields = ('farmer','receipt_no', 'rec_range1', 'rec_range2', 'investigation_status', 'remarks')
