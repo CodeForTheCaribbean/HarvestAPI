@@ -1,5 +1,5 @@
-from farmers.models import Farmer, Receipt, Farm
-from farmers.serializers import FarmerSerializer, ReceiptSerializer, FarmSerializer
+from farmers.models import Farmer, Receipt, Farm, Crop
+from farmers.serializers import FarmerSerializer, ReceiptSerializer, FarmSerializer, CropSerializer
 from rest_framework import generics
 from rest_framework import permissions
 from django.contrib.auth.models import User
@@ -49,3 +49,12 @@ class FarmViewSet(viewsets.ModelViewSet):
     queryset = Farm.objects.all()
     serializer_class = FarmSerializer
     filter_fields = ('farm_id', 'parish')
+
+class CropViewSet(viewsets.ModelViewSet):
+    """
+    This view shows Crops on a Farm
+    """
+
+    queryset = Crop.objects.all()
+    serializer_class = CropSerializer
+    filter_fields = ('crop_name', 'common_name')
