@@ -68,7 +68,6 @@ class Farm(models.Model):
 
 class Crop(models.Model):
 
-    farm_id = models.CharField(max_length=255, default='')
     crop_name = models.CharField(max_length=100, default='')
     common_name = models.CharField(max_length=30, default='')
     estimated_vol = models.CharField(max_length=50, default='')
