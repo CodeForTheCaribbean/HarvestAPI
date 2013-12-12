@@ -66,6 +66,22 @@ class Farm(models.Model):
     def __unicode__(self):
         return 'Farmer Info: %s %s %s %s' % (self.first_name, self.alias, self.last_name, self.verified_status)
 
+class Crop(models.Model):
+
+    farm_id = models.CharField(max_length=255, default='')
+    crop_name = models.CharField(max_length=100, default='')
+    common_name = models.CharField(max_length=30, default='')
+    estimated_vol = models.CharField(max_length=50, default='')
+    variety = models.CharField(max_length=50, default='')
+    plant_date = models.CharField(max_length=50, default='')
+    count = models.CharField(max_length=50, default='')
+    area = models.CharField(max_length=50, default='')
+    status = models.CharField(max_length=50, default='')
+    exp_date = models.CharField(max_length=50, default='')
+    farm = models.ForeignKey(Farm)
+
+    class Meta:
+        ordering = ('crop_name',)
 
 
 
