@@ -55,7 +55,7 @@ class Farm(models.Model):
     farmer = models.ForeignKey(Farmer)
 
     class Meta:
-        ordering = ('last_updated')
+        ordering = ('district',)
 
 
 
