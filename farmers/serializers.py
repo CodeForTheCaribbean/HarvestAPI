@@ -35,18 +35,8 @@ class FarmSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('farm_address', 'farm_id', 'parish', 'district', 'extension', 'farm_size', 'lat', 'long','farmer')
 
 class CropSerializer(serializers.HyperlinkedModelSerializer):
-
+    farm = serializers.RelatedField()
     class Meta:
         model = Crop
-        fields = ('crop_name',)
+        fields = ('crop_name','common_name','estimated_vol','variety','plant_date','count','area','status','exp_date', 'farm')
 
-          crop_name = models.CharField(max_length=100, default='')
-    common_name = models.CharField(max_length=30, default='')
-    estimated_vol = models.CharField(max_length=50, default='')
-    variety = models.CharField(max_length=50, default='')
-    plant_date = models.CharField(max_length=50, default='')
-    count = models.CharField(max_length=50, default='')
-    area = models.CharField(max_length=50, default='')
-    status = models.CharField(max_length=50, default='')
-    exp_date = models.CharField(max_length=50, default='')
-    farm = models.ForeignKey(Farm)

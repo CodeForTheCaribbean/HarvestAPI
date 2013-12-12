@@ -64,7 +64,7 @@ class Farm(models.Model):
         ordering = ('district',)
 
     def __unicode__(self):
-        return 'Farmer Info: %s %s %s %s' % (self.first_name, self.alias, self.last_name, self.verified_status)
+        return 'Farm Info - Parish %s Address %s Farm Status %s' % (self.parish, self.farm_address, self.farm_status)
 
 class Crop(models.Model):
 
