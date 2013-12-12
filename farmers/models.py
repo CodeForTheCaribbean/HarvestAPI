@@ -22,7 +22,7 @@ class Farmer(models.Model):
         ordering = ('last_updated',)
 
     def __unicode__(self):
-        return 'Farmer ID:%s %s %s - %s' % ( self.farmer_id, self.first_name, self.last_name, self.alias)
+        return 'First Name :%s Last Name: %s ID: %s  Alias: %s ' % ( self.first_name, self.last_name, self.farmer_id, self.alias)
 
 class Receipt(models.Model):
 #    farmer_idx = models.CharField(max_length=100, null=False, default='')
