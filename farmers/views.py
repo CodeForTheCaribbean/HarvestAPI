@@ -47,5 +47,5 @@ class FarmViewSet(viewsets.ModelViewSet):
     This view show Farmer's Farm
     """
     queryset = Farm.objects.all()
-    serializer_class = FarmerSerializer
+    serializer_class = FarmSerializer
     filter_fields = ('farm_id', 'parish')
