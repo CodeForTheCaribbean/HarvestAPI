@@ -40,4 +40,23 @@ class Receipt(models.Model):
     def __unicode__(self):
         return 'Receipt no: %s' % (self.receipt_no)
 
+class Farm(models.Model):
+
+    #farmer_idx = models.CharField(max_length=100, null=False, default='')
+    farm_address = models.CharField(max_length=255, default='')
+    farm_id = models.CharField(max_length=100, default='')
+    parish = models.CharField(max_length=30, default='')
+    district = models.CharField(max_length=50, default='')
+    extension = models.CharField(max_length=50, default='')
+    farm_size = models.CharField(max_length=50, default='')
+    lat = models.CharField(max_length=50, default='')
+    long = models.CharField(max_length=50, default='')
+    farm_status = models.CharField(max_length=50, default='')
+    farmer = models.ForeignKey(Farmer)
+
+    class Meta:
+        ordering = ('last_updated')
+
+
+
 
