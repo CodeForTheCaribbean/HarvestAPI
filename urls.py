@@ -7,6 +7,7 @@ router = DefaultRouter()
 router.register(r'farmers', views.FarmerViewSet)
 router.register(r'users', views.UserViewSet)
 router.register(r'receipts', views.ReceiptViewSet)
+router.register(r'farms', views.FarmViewSet)
 
 # The API URLs are now determined automatically by the router.
 # Additionally, we include the login URLs for the browseable API.
