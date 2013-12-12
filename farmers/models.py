@@ -22,7 +22,13 @@ class Farmer(models.Model):
         ordering = ('last_updated',)
 
     def __unicode__(self):
-        return ' Name :%s %s %s Cell %s' % ( self.first_name, self.alias, self.last_name, self.cell_number)
+        # dirty IF
+        if self.alias and self.cell_number:
+            return ' Name - %s "%s" %s Cell %s' % ( self.first_name, self.alias, self.last_name, self.cell_number)
+        elif self.cell_number:
+            return ' Name - %s %s Cell %s' % ( self.first_name, self.last_name, self.cell_number)
+        else:
+            return ' Name - %s %s' % ( self.first_name, self.last_name)
 
 class Receipt(models.Model):
 #    farmer_idx = models.CharField(max_length=100, null=False, default='')
