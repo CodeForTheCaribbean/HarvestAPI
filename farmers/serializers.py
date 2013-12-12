@@ -28,7 +28,7 @@ class ReceiptSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('url','farmer', 'receipt_no', 'rec_range1', 'rec_range2', 'investigation_status', 'remarks')
 
 class FarmSerializer(serializers.HyperlinkedModelSerializer):
-    #farm
+    farmer = serializers.RelatedField()
 
     class Meta:
         model = Farm
