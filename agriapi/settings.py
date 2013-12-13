@@ -124,6 +124,7 @@ INSTALLED_APPS = (
     'farmers',
     'south',
     'rest_framework_swagger',
+    'django_filters',
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:

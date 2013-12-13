@@ -36,7 +36,7 @@ class FarmSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('farm_address', 'farm_id', 'parish', 'district', 'extension', 'farm_size', 'lat', 'long','farmer')
 
 class CropSerializer(serializers.HyperlinkedModelSerializer):
-    farm = serializers.RelatedField()
+    farms = serializers.RelatedField(many=True)
 
     class Meta:
         model = Crop
