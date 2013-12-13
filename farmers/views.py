@@ -48,7 +48,7 @@ class FarmViewSet(viewsets.ModelViewSet):
     """
     queryset = Farm.objects.all()
     serializer_class = FarmSerializer
-    filter_fields = ('farm_id', 'parish')
+    filter_fields = ('farm_id', 'parish', 'farmer')
 
 class CropViewSet(viewsets.ModelViewSet):
     """

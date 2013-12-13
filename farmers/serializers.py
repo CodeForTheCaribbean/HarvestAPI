@@ -28,7 +28,8 @@ class ReceiptSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('url','farmer', 'receipt_no', 'rec_range1', 'rec_range2', 'investigation_status', 'remarks')
 
 class FarmSerializer(serializers.HyperlinkedModelSerializer):
-    farmer = serializers.RelatedField()
+    farmers = serializers.RelatedField(many=True)
+    #farmer = serializers.RelatedField()
 
     class Meta:
         model = Farm
@@ -36,6 +37,7 @@ class FarmSerializer(serializers.HyperlinkedModelSerializer):
 
 class CropSerializer(serializers.HyperlinkedModelSerializer):
     farm = serializers.RelatedField()
+
     class Meta:
         model = Crop
         fields = ('crop_name','common_name','estimated_vol','variety','plant_date','count','area','status','exp_date', 'farm')
