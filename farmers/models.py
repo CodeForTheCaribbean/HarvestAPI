@@ -32,7 +32,7 @@ class Farmer(models.Model):
 
 class Receipt(models.Model):
 #    farmer_idx = models.CharField(max_length=100, null=False, default='')
-    receipt_no =  models.CharField(max_length=100, null=False, default='')
+    receipt_no =  models.CharField(max_length=100, null=False, default='', primary_key=True)
     rec_range1 = models.CharField(max_length=100, null=True, default='')
     rec_range2 = models.CharField(max_length=100, null=True, default='')
     investigation_status = models.CharField(max_length=100, null=True, default='')
@@ -48,15 +48,16 @@ class Receipt(models.Model):
 
 class Farm(models.Model):
 
-    #farmer_idx = models.CharField(max_length=100, null=False, default='')
+#    farmer_id = models.CharField(max_length=100, null=False, default='')
+    farmer_idx = models.CharField(max_length=100, null=False, default='')
     farm_address = models.CharField(max_length=255, default='')
-    farm_id = models.CharField(max_length=100, default='')
+    farm_id = models.CharField(max_length=100, default='', primary_key=True)
     parish = models.CharField(max_length=30, default='')
     district = models.CharField(max_length=50, default='')
     extension = models.CharField(max_length=50, default='')
-    farm_size = models.CharField(max_length=50, default='')
-    lat = models.CharField(max_length=50, default='')
-    long = models.CharField(max_length=50, default='')
+    farm_size = models.CharField(max_length=50, default='', null=True)
+    lat = models.CharField(max_length=50, default='', null=True)
+    long = models.CharField(max_length=50, default='', null=True)
     farm_status = models.CharField(max_length=50, default='')
     farmer = models.ForeignKey(Farmer)
 
@@ -69,14 +70,14 @@ class Farm(models.Model):
 class Crop(models.Model):
 
     crop_name = models.CharField(max_length=100, default='')
-    common_name = models.CharField(max_length=30, default='')
-    estimated_vol = models.CharField(max_length=50, default='')
-    variety = models.CharField(max_length=50, default='')
-    plant_date = models.CharField(max_length=50, default='')
-    count = models.CharField(max_length=50, default='')
-    area = models.CharField(max_length=50, default='')
-    status = models.CharField(max_length=50, default='')
-    exp_date = models.CharField(max_length=50, default='')
+    common_name = models.CharField(max_length=30, default='', null=True)
+    estimated_vol = models.CharField(max_length=50, default='', null=True)
+    variety = models.CharField(max_length=50, default='', null=True)
+    plant_date = models.CharField(max_length=50, default='', null=True)
+    count = models.CharField(max_length=50, default='', null=True)
+    area = models.CharField(max_length=50, default='', null=True)
+    status = models.CharField(max_length=50, default='', null=True)
+    exp_date = models.CharField(max_length=50, default='', null=True)
     farm = models.ForeignKey(Farm)
 
     class Meta:

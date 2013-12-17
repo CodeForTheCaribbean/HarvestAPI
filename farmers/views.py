@@ -1,4 +1,4 @@
-#import django_filters
+import django_filters
 from farmers.models import Farmer, Receipt, Farm, Crop
 from farmers.serializers import FarmerSerializer, ReceiptSerializer, FarmSerializer, CropSerializer
 from rest_framework import generics
@@ -52,15 +52,12 @@ class FarmViewSet(viewsets.ModelViewSet):
     serializer_class = FarmSerializer
     filter_fields = ('farm_id', 'parish', 'farmer')
 
-<<<<<<< HEAD
-=======
 class CropFilter(django_filters.FilterSet):
 
     class Meta:
         model = Crop
         fields = ['crop_name', 'common_name', 'farm','farm__farm_id']
 
->>>>>>> api-v2
 class CropViewSet(viewsets.ModelViewSet):
     """
     This view shows Crops on a Farm
@@ -68,11 +65,7 @@ class CropViewSet(viewsets.ModelViewSet):
 
     queryset = Crop.objects.all()
     serializer_class = CropSerializer
-<<<<<<< HEAD
-    filter_fields = ('crop_name', 'common_name')
-=======
     filter_class = CropFilter
     #filter_fields = ('crop_name', 'common_name', 'farm__farm_id')
 
 
->>>>>>> api-v2
