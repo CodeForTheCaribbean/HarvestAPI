@@ -165,7 +165,7 @@ LOGGING = {
 #added for Heroku
 # Parse database configuration from $DATABASE_URL
 import dj_database_url
-DATABASES['default'] =  dj_database_url.config(default='postgres://syqaqkywdfbmze:qYZove4RxtZgnb3lRkHXQqQZOX@ec2-107-21-100-118.compute-1.amazonaws.com:5432/df99smsbfmlc0t')
+DATABASES['default'] =  dj_database_url.config(default='postgres://bejmjahavbccqk:9othdpQ6O-Fm3tMGa557Io9sHT@ec2-54-204-24-154.compute-1.amazonaws.com:5432/dcjpcapsa2saq4')
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
