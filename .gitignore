@@ -1,3 +1,5 @@
+farmers/fixtures/initial_data.json
+
 venv
 *.pyc
 staticfiles
