@@ -84,4 +84,15 @@ class Crop(models.Model):
         ordering = ('crop_name',)
 
 
+class Livestock(models.Model):
+
+    livestock_name = models.CharField(max_length=100, default='')
+    count = models.CharField(max_length=50, default='', null=True)
+    capacity = models.CharField(max_length=50, default='', null=True)
+    stage = models.CharField(max_length=50, default='', null=True)
+    farm = models.ForeignKey(Farm)
+
+    class Meta:
+        ordering = ('livestock_name',)
+
 

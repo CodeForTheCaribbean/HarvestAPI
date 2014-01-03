@@ -1,6 +1,6 @@
 from django.forms import widgets
 from rest_framework import serializers
-from farmers.models import Farmer, Receipt, Farm, Crop
+from farmers.models import Farmer, Receipt, Farm, Crop, Livestock
 from django.contrib.auth.models import User
 
 class FarmerSerializer(serializers.HyperlinkedModelSerializer):
@@ -41,4 +41,11 @@ class CropSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Crop
         fields = ('crop_name','common_name','estimated_vol','variety','plant_date','count','area','status','exp_date', 'farm')
+
+class LivestockSerializer(serializers.HyperlinkedModelSerializer):
+    farms = serializers.RelatedField(many=True)
+
+    class Meta:
+        model = Livestock
+        fields = ('livestock_name','count','capacity','stage', 'farm')
 

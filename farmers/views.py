@@ -1,6 +1,7 @@
 import django_filters
-from farmers.models import Farmer, Receipt, Farm, Crop
-from farmers.serializers import FarmerSerializer, ReceiptSerializer, FarmSerializer, CropSerializer
+from farmers.models import Farmer, Receipt, Farm, Crop, Livestock
+from farmers.serializers import FarmerSerializer, ReceiptSerializer, FarmSerializer, CropSerializer, LivestockSerializer
+ 
 from rest_framework import generics
 from rest_framework import permissions
 from django.contrib.auth.models import User
@@ -66,6 +67,19 @@ class CropViewSet(viewsets.ModelViewSet):
     queryset = Crop.objects.all()
     serializer_class = CropSerializer
     filter_class = CropFilter
-    #filter_fields = ('crop_name', 'common_name', 'farm__farm_id')
 
+class LivestockFilter(django_filters.FilterSet):
+
+    class Meta:
+        model = Livestock
+        fields = ['livestock_name', 'farm','farm__farm_id']
+
+class LivestockViewSet(viewsets.ModelViewSet):
+    """
+    This view shows Livestock on a Farm
+    """
+
+    queryset = Livestock.objects.all()
+    serializer_class = LivestockSerializer
+    filter_class = LivestockFilter
 
