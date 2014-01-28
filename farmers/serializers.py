@@ -1,6 +1,6 @@
 from django.forms import widgets
 from rest_framework import serializers
-from farmers.models import Farmer, Receipt, Farm, Crop, Livestock
+from farmers.models import Farmer, Receipt, Farm, Crop, Livestock, Price
 from django.contrib.auth.models import User
 
 class FarmerSerializer(serializers.HyperlinkedModelSerializer):
@@ -21,15 +21,15 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ReceiptSerializer(serializers.HyperlinkedModelSerializer):
-    farmer = serializers.RelatedField()
+    farmer = serializers.HyperlinkedRelatedField(view_name='farmer-detail')
 
     class Meta:
         model = Receipt
         fields = ('url','farmer', 'receipt_no', 'rec_range1', 'rec_range2', 'investigation_status', 'remarks')
 
 class FarmSerializer(serializers.HyperlinkedModelSerializer):
-    farmers = serializers.RelatedField(many=True)
     #farmer = serializers.RelatedField()
+    farmer = serializers.HyperlinkedRelatedField(view_name='farmer-detail') 
 
     class Meta:
         model = Farm
@@ -48,4 +48,11 @@ class LivestockSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Livestock
         fields = ('livestock_name','count','capacity','stage', 'farm')
+
+class PriceSerializer(serializers.HyperlinkedModelSerializer):
+    #crop_code = serializers.RelatedField(many=True)
+
+    class Meta:
+        model = Price
+        fields = ('crop_name','crop_code','location','low','high','most_freq','week_ending')
 

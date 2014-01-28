@@ -10,6 +10,7 @@ router.register(r'receipts', views.ReceiptViewSet)
 router.register(r'farms', views.FarmViewSet)
 router.register(r'crops', views.CropViewSet)
 router.register(r'livestock', views.LivestockViewSet)
+router.register(r'price', views.PriceViewSet)
 
 # The API URLs are now determined automatically by the router.
 # Additionally, we include the login URLs for the browseable API.

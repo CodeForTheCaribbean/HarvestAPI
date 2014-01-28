@@ -16,7 +16,7 @@ class Farmer(models.Model):
     agri_activity = models.CharField(max_length=150, null=True, default='')
     owner = models.ForeignKey('auth.User', related_name='farmers', default='1', null=True)
     last_updated = models.DateTimeField(auto_now_add=True, null=True)
-#    receipts = models.ForeignKey(Receipt, related_name='farmers', null=True)
+#    receipts = models.ForeignKey('Receipt', related_name='receipts', null=True)
 
     class Meta:
         ordering = ('last_updated',)
@@ -95,4 +95,15 @@ class Livestock(models.Model):
     class Meta:
         ordering = ('livestock_name',)
 
+class Price(models.Model):
 
+    crop_name = models.CharField(max_length=100, default='', null=True)
+    crop_code = models.CharField(max_length=5, default='', null=True)
+    location = models.CharField(max_length=50, default='', null=True)
+    low = models.DecimalField(max_digits=10, default='', null=True, decimal_places=2)
+    high = models.DecimalField(max_digits=10, default='', null=True, decimal_places=2)
+    most_freq = models.DecimalField(max_digits=10, default='', null=True, decimal_places=2)
+    week_ending = models.DateField(max_length=50, default='', null=True)
+
+    class Meta:
+        ordering = ('week_ending',)

@@ -124,7 +124,9 @@ INSTALLED_APPS = (
     'farmers',
     'south',
     'rest_framework_swagger',
+#    'rest_framework.authtoken',
     'django_filters',
+
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
@@ -186,7 +188,12 @@ STATICFILES_DIRS = (
 
 #add pagination for API
 REST_FRAMEWORK = {
-    'PAGINATE_BY': 10,
-    'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',)
-
+    'PAGINATE_BY': 10, #API defaults to 10 return results
+    'PAGINATE_BY_PARAM': 'page_size',  # Allow client to override, using `?page_size=xxx`.
+    'MAX_PAGINATE_BY': 100,             # Maximum limit allowed when using `?page_size=xxx`.
+    'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+#        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ),
 }

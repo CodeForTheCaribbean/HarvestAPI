@@ -1,6 +1,6 @@
 import django_filters
-from farmers.models import Farmer, Receipt, Farm, Crop, Livestock
-from farmers.serializers import FarmerSerializer, ReceiptSerializer, FarmSerializer, CropSerializer, LivestockSerializer
+from farmers.models import Farmer, Receipt, Farm, Crop, Livestock, Price
+from farmers.serializers import FarmerSerializer, ReceiptSerializer, FarmSerializer, CropSerializer, LivestockSerializer, PriceSerializer
  
 from rest_framework import generics
 from rest_framework import permissions
@@ -14,7 +14,8 @@ from rest_framework import renderers
 from rest_framework.response import Response
 from rest_framework import viewsets
 from rest_framework.decorators import link
-
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import SessionAuthentication
 
 
 class FarmerViewSet(viewsets.ModelViewSet):
@@ -35,6 +36,8 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
     This view set automatically provides `list` and `detail`  on Users .
     """
     queryset = User.objects.all()
+    authentication_classes = (SessionAuthentication,)
+    permission_classes = (IsAuthenticated,)
     serializer_class = UserSerializer
 
 class ReceiptViewSet(viewsets.ModelViewSet):
@@ -82,4 +85,19 @@ class LivestockViewSet(viewsets.ModelViewSet):
     queryset = Livestock.objects.all()
     serializer_class = LivestockSerializer
     filter_class = LivestockFilter
+
+class PriceFilter(django_filters.FilterSet):
+
+    class Meta:
+        model = Price
+        fields = ['crop_name','crop_code','location','low','high','most_freq','week_ending']
+
+class PriceViewSet(viewsets.ModelViewSet):
+    """
+    This view shows Crop Prices
+    """
+
+    queryset = Price.objects.all()
+    serializer_class = PriceSerializer
+    filter_class = PriceFilter
 
