@@ -47,4 +47,3 @@ dumpddata-desktop.json
 farmers_131208.data
 farmers_131208.json
 agriapi/settings.py
-farmers/migrations/*
