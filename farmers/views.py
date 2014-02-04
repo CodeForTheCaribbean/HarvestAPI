@@ -13,6 +13,7 @@ from rest_framework.reverse import reverse
 from rest_framework import renderers
 from rest_framework.response import Response
 from rest_framework import viewsets
+from rest_framework import filters
 from rest_framework.decorators import link
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication
@@ -26,10 +27,12 @@ class FarmerViewSet(viewsets.ModelViewSet):
     """
     queryset = Farmer.objects.all()
     serializer_class = FarmerSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
-                          IsOwnerOrReadOnly,)
+    permission_classes = (IsAuthenticated,)#(permissions.IsAuthenticatedOrReadOnly,
+                         # IsOwnerOrReadOnly,)
     filter_fields = ('farmer_idx','farmer_id','first_name','last_name','alias','res_address', 'res_parish','tel_number','cell_number','verified_status','dob','agri_activity')
-
+    filter_backends = (filters.SearchFilter,filters.OrderingFilter,filters.DjangoFilterBackend,)
+    search_fields = ('first_name', 'last_name', 'alias', 'res_parish', 'agri_activity')
+    ordering_fields = ('first_name', 'last_name', 'alias', 'res_parish', 'agri_activity', 'verified_status', 'dob')
 
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
     """
@@ -39,6 +42,18 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
     authentication_classes = (SessionAuthentication,)
     permission_classes = (IsAuthenticated,)
     serializer_class = UserSerializer
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('username', 'email')
+
+class ReceiptFilter(django_filters.FilterSet):
+
+    parish = django_filters.CharFilter(name="farmer__res_parish")
+    farmer_id = django_filters.CharFilter(name="farmer__farmer_id")
+
+    class Meta:
+        model = Receipt
+        fields = ['farmer','receipt_no', 'rec_range1', 'rec_range2', 'investigation_status', 'remarks','farmer_id','parish']
+
 
 class ReceiptViewSet(viewsets.ModelViewSet):
     """
@@ -46,7 +61,11 @@ class ReceiptViewSet(viewsets.ModelViewSet):
     """
     queryset = Receipt.objects.all()
     serializer_class = ReceiptSerializer
-    filter_fields = ('farmer','receipt_no', 'rec_range1', 'rec_range2', 'investigation_status', 'remarks')
+    filter_class = ReceiptFilter
+    filter_backends = (filters.SearchFilter,filters.OrderingFilter,filters.DjangoFilterBackend,)
+    search_fields = ('remarks')
+    ordering_fields = ('farmer', 'investigation_status')
+
 
 class FarmViewSet(viewsets.ModelViewSet):
     """
@@ -55,12 +74,21 @@ class FarmViewSet(viewsets.ModelViewSet):
     queryset = Farm.objects.all()
     serializer_class = FarmSerializer
     filter_fields = ('farm_id', 'parish', 'farmer')
+    filter_backends = (filters.SearchFilter,filters.OrderingFilter,filters.DjangoFilterBackend,)
+    search_fields = ('parish', 'farmer')
+    ordering_fields = ('parish', 'farmer')
+
 
 class CropFilter(django_filters.FilterSet):
 
+    parish = django_filters.CharFilter(name="farm__parish")
+    farm_id = django_filters.CharFilter(name="farm__farm_id")
+    min_vol = django_filters.NumberFilter(name="estimated_vol", lookup_type='gte')
+    max_vol = django_filters.NumberFilter(name="estimated_vol", lookup_type='lte')
+
     class Meta:
         model = Crop
-        fields = ['crop_name', 'common_name', 'farm','farm__farm_id']
+        fields = ['crop_name', 'common_name', 'farm','farm__farm_id', 'parish', 'min_vol', 'max_vol']
 
 class CropViewSet(viewsets.ModelViewSet):
     """
@@ -70,12 +98,19 @@ class CropViewSet(viewsets.ModelViewSet):
     queryset = Crop.objects.all()
     serializer_class = CropSerializer
     filter_class = CropFilter
+    filter_backends = (filters.SearchFilter,filters.OrderingFilter,filters.DjangoFilterBackend,)
+    search_fields = ('crop_name',)
+    ordering_fields = ('crop_name', 'farm', 'farm_id')
+
 
 class LivestockFilter(django_filters.FilterSet):
 
+    parish = django_filters.CharFilter(name="farm__parish")
+    farm_id = django_filters.CharFilter(name="farm__farm_id")
+
     class Meta:
         model = Livestock
-        fields = ['livestock_name', 'farm','farm__farm_id']
+        fields = ['livestock_name', 'farm','farm_id', 'parish']
 
 class LivestockViewSet(viewsets.ModelViewSet):
     """
@@ -85,6 +120,10 @@ class LivestockViewSet(viewsets.ModelViewSet):
     queryset = Livestock.objects.all()
     serializer_class = LivestockSerializer
     filter_class = LivestockFilter
+    filter_backends = (filters.SearchFilter,filters.OrderingFilter,filters.DjangoFilterBackend,)
+    search_fields = ('livestock_name')
+    ordering_fields = ('livestock_name', 'farm', 'farm_id')
+
 
 class PriceFilter(django_filters.FilterSet):
 
@@ -100,4 +139,7 @@ class PriceViewSet(viewsets.ModelViewSet):
     queryset = Price.objects.all()
     serializer_class = PriceSerializer
     filter_class = PriceFilter
+    filter_backends = (filters.SearchFilter,filters.OrderingFilter,filters.DjangoFilterBackend,)
+    search_fields = ('crop_name', 'crop_code', 'location')
+    ordering_fields = ('crop_name', 'crop_code', 'location')
 

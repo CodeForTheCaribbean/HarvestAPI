@@ -21,15 +21,15 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ReceiptSerializer(serializers.HyperlinkedModelSerializer):
-    farmer = serializers.HyperlinkedRelatedField(view_name='farmer-detail')
+    farmer = serializers.RelatedField(many=False)
 
     class Meta:
         model = Receipt
         fields = ('url','farmer', 'receipt_no', 'rec_range1', 'rec_range2', 'investigation_status', 'remarks')
 
 class FarmSerializer(serializers.HyperlinkedModelSerializer):
-    #farmer = serializers.RelatedField()
-    farmer = serializers.HyperlinkedRelatedField(view_name='farmer-detail') 
+    farmer = serializers.RelatedField(many=False)
+    #farmer = serializers.HyperlinkedRelatedField(view_name='farmer-detail') 
 
     class Meta:
         model = Farm

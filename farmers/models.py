@@ -23,15 +23,13 @@ class Farmer(models.Model):
 
     def __unicode__(self):
         # dirty IF
-        if self.alias and self.cell_number:
-            return ' Name - %s "%s" %s Cell %s' % ( self.first_name, self.alias, self.last_name, self.cell_number)
-        elif self.cell_number:
-            return ' Name - %s %s Cell %s' % ( self.first_name, self.last_name, self.cell_number)
+        if self.alias:
+            return 'Name: %s \'%s\' %s. Farm Activity: %s' % ( self.first_name.capitalize(), self.alias.capitalize(), self.last_name.capitalize(), self.agri_activity)
         else:
-            return ' Name - %s %s' % ( self.first_name, self.last_name)
+            return 'Name: %s %s. Farm Activity: %s' % ( self.first_name.capitalize(), self.last_name.capitalize(), self.agri_activity)
 
 class Receipt(models.Model):
-#    farmer_idx = models.CharField(max_length=100, null=False, default='')
+
     receipt_no =  models.CharField(max_length=100, null=False, default='', primary_key=True)
     rec_range1 = models.CharField(max_length=100, null=True, default='')
     rec_range2 = models.CharField(max_length=100, null=True, default='')
@@ -71,7 +69,7 @@ class Crop(models.Model):
 
     crop_name = models.CharField(max_length=100, default='')
     common_name = models.CharField(max_length=30, default='', null=True)
-    estimated_vol = models.CharField(max_length=50, default='', null=True)
+    estimated_vol = models.DecimalField(max_digits=10, default='', null=True, decimal_places=2)
     variety = models.CharField(max_length=50, default='', null=True)
     plant_date = models.CharField(max_length=50, default='', null=True)
     count = models.CharField(max_length=50, default='', null=True)
