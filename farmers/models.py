@@ -1,4 +1,11 @@
 from django.db import models
+from rest_framework.authtoken.models import Token
+
+#@receiver(post_save, sender=User)
+#def create_auth_token(sender, instance=None, created=False, **kwargs):
+#    if created:
+#        Token.objects.create(user=instance)
+
 
 class Farmer(models.Model):
 

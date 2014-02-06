@@ -15,8 +15,13 @@ from rest_framework.response import Response
 from rest_framework import viewsets
 from rest_framework import filters
 from rest_framework.decorators import link
+
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.authentication import SessionAuthentication
+from rest_framework.authentication import SessionAuthentication, TokenAuthentication, BasicAuthentication
+from django.contrib.auth import get_user_model
+from rest_framework import status, serializers
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
 
 class FarmerViewSet(viewsets.ModelViewSet):
@@ -25,6 +30,7 @@ class FarmerViewSet(viewsets.ModelViewSet):
     `update` and `destroy` Farmers.
 
     """
+    authentication_classes = (BasicAuthentication, SessionAuthentication, TokenAuthentication)
     queryset = Farmer.objects.all()
     serializer_class = FarmerSerializer
     permission_classes = (IsAuthenticated,)#(permissions.IsAuthenticatedOrReadOnly,
@@ -39,7 +45,7 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
     This view set automatically provides `list` and `detail`  on Users .
     """
     queryset = User.objects.all()
-    authentication_classes = (SessionAuthentication,)
+    authentication_classes = (SessionAuthentication,TokenAuthentication)
     permission_classes = (IsAuthenticated,)
     serializer_class = UserSerializer
     filter_backends = (filters.SearchFilter,)
@@ -142,4 +148,24 @@ class PriceViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.SearchFilter,filters.OrderingFilter,filters.DjangoFilterBackend,)
     search_fields = ('crop_name', 'crop_code', 'location')
     ordering_fields = ('crop_name', 'crop_code', 'location')
+
+
+@api_view(['POST'])
+def register(request):
+    VALID_USER_FIELDS = [f.name for f in get_user_model()._meta.fields]
+    DEFAULTS = {
+        # you can define any defaults that you would like for the user, here
+    }
+    serialized = UserSerializer(data=request.DATA)
+    if serialized.is_valid():
+        user_data = {field: data for (field, data) in request.DATA.items() if field in VALID_USER_FIELDS}
+        user_data.update(DEFAULTS)
+        user = get_user_model().objects.create_user(
+            **user_data
+        )
+        return Response(UserSerializer(instance=user).data, status=status.HTTP_201_CREATED)
+    else:
+        return Response(serialized._errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 

@@ -11,12 +11,12 @@ class FarmerSerializer(serializers.HyperlinkedModelSerializer):
         model = Farmer
         fields = ('url','farmer_id','farmer_idx','first_name','last_name','alias','res_address', 'res_parish','tel_number','cell_number','verified_status','dob','agri_activity','owner')
 
-
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     farmers = serializers.HyperlinkedRelatedField(many=True, view_name='farmer-detail')
 
     class Meta:
         model = User
+#        model = get_user_model()
         fields = ('url', 'username', 'farmers')
 
 
