@@ -126,7 +126,7 @@ INSTALLED_APPS = (
     'rest_framework_swagger',
     'rest_framework.authtoken', 
     # Uncomment the next line to enable the admin:
-#    'django.contrib.admin',
+    'django.contrib.admin',
     'django_filters',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
@@ -196,7 +196,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ),
-#    'DEFAULT_PERMISSION_CLASSES': (
-#        'rest_framework.permissions.IsAuthenticated',
-#    )
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    )
 }
