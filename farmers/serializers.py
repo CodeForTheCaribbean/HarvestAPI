@@ -21,8 +21,8 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ReceiptSerializer(serializers.HyperlinkedModelSerializer):
-#    farmer = serializers.RelatedField(many=False)
-    farmer = serializers.HyperlinkedRelatedField(view_name='farmer-detail') 
+    farmer = FarmerSerializer()
+#    farmer = serializers.HyperlinkedRelatedField(view_name='farmer-detail') 
 
     class Meta:
         model = Receipt

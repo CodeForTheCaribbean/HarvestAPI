@@ -58,7 +58,7 @@ class ReceiptFilter(django_filters.FilterSet):
 
     class Meta:
         model = Receipt
-        fields = ['receipt_no', 'rec_range1', 'rec_range2', 'investigation_status', 'remarks','farmer_id','parish']
+        fields = ['farmer','receipt_no', 'rec_range1', 'rec_range2', 'investigation_status', 'remarks','farmer_id','parish']
 
 
 class ReceiptViewSet(viewsets.ModelViewSet):
