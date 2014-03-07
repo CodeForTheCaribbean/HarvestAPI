@@ -55,5 +55,5 @@ class PriceSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Price
-        fields = ('crop_name','crop_code','location','low','high','most_freq','week_ending')
+        fields = ('price','public','price_point','parish','commodity','crop_code','units','variety','batch_date','published_on','extension')
 

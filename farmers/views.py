@@ -135,7 +135,7 @@ class PriceFilter(django_filters.FilterSet):
 
     class Meta:
         model = Price
-        fields = ['crop_name','crop_code','location','low','high','most_freq','week_ending']
+        fields = ['price_id','price','public','price_point','parish','commodity','crop_code','units','variety','batch_date','published_on','extension']
 
 class PriceViewSet(viewsets.ModelViewSet):
     """
@@ -146,8 +146,8 @@ class PriceViewSet(viewsets.ModelViewSet):
     serializer_class = PriceSerializer
     filter_class = PriceFilter
     filter_backends = (filters.SearchFilter,filters.OrderingFilter,filters.DjangoFilterBackend,)
-    search_fields = ('crop_name', 'crop_code', 'location')
-    ordering_fields = ('crop_name', 'crop_code', 'location')
+    search_fields = ('commodity', 'crop_code', 'price_point', 'extension', 'parish')
+    ordering_fields = ('commodity', 'crop_code', 'price_point', 'extension', 'parish')
 
 
 @api_view(['POST'])

@@ -102,13 +102,18 @@ class Livestock(models.Model):
 
 class Price(models.Model):
 
-    crop_name = models.CharField(max_length=100, default='', null=True)
-    crop_code = models.CharField(max_length=5, default='', null=True)
-    location = models.CharField(max_length=50, default='', null=True)
-    low = models.DecimalField(max_digits=10, default='', null=True, decimal_places=2)
-    high = models.DecimalField(max_digits=10, default='', null=True, decimal_places=2)
-    most_freq = models.DecimalField(max_digits=10, default='', null=True, decimal_places=2)
-    week_ending = models.DateField(max_length=50, default='', null=True)
+    price_id =  models.CharField(max_length=100, null=False, default='', primary_key=True)
+    price  = models.DecimalField(max_digits=10, default='', null=True, decimal_places=2)
+    public = models.CharField(max_length=10, default='', null=True)
+    price_point = models.CharField(max_length=50, default='', null=True)
+    parish = models.CharField(max_length=50, default='', null=True)
+    commodity = models.CharField(max_length=50, default='', null=True)
+    crop_code = models.CharField(max_length=50, default='', null=True)
+    units = models.CharField(max_length=50, default='', null=True)
+    variety = models.CharField(max_length=50, default='', null=True)
+    batch_date = models.DateField(max_length=50, default='', null=True)
+    published_on = models.DateField(max_length=50, default='', null=True)
+    extension = models.CharField(max_length=50, default='', null=True)
 
     class Meta:
-        ordering = ('week_ending',)
+        ordering = ('published_on',)
