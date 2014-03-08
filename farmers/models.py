@@ -29,11 +29,7 @@ class Farmer(models.Model):
         ordering = ('last_updated',)
 
     def __unicode__(self):
-        # dirty IF
-        if self.alias:
-            return 'Name: %s \'%s\' %s. Farm Activity: %s' % ( self.first_name.capitalize(), self.alias.capitalize(), self.last_name.capitalize(), self.agri_activity)
-        else:
-            return 'Name: %s %s. Farm Activity: %s' % ( self.first_name.capitalize(), self.last_name.capitalize(), self.agri_activity)
+            return 'Farm Activity: %s' % (self.agri_activity)
 
 class Receipt(models.Model):
 
