@@ -16,7 +16,7 @@ from rest_framework import viewsets
 from rest_framework import filters
 from rest_framework.decorators import link
 
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication, BasicAuthentication
 from django.contrib.auth import get_user_model
 from rest_framework import status, serializers
@@ -33,7 +33,7 @@ class FarmerViewSet(viewsets.ModelViewSet):
     authentication_classes = (BasicAuthentication, SessionAuthentication, TokenAuthentication)
     queryset = Farmer.objects.all()
     serializer_class = FarmerSerializer
-    permission_classes = (IsAuthenticated,)#(permissions.IsAuthenticatedOrReadOnly,
+    permission_classes = (IsAdminUser,)#(permissions.IsAuthenticatedOrReadOnly,
                          # IsOwnerOrReadOnly,)
     filter_fields = ('farmer_idx','farmer_id','first_name','last_name','alias','res_address', 'res_parish','tel_number','cell_number','verified_status','dob','agri_activity')
     filter_backends = (filters.SearchFilter,filters.OrderingFilter,filters.DjangoFilterBackend,)
@@ -46,7 +46,7 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
     """
     queryset = User.objects.all()
     authentication_classes = (SessionAuthentication,TokenAuthentication)
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAdminUser,)
     serializer_class = UserSerializer
     filter_backends = (filters.SearchFilter,)
     search_fields = ('username', 'email')
@@ -66,6 +66,7 @@ class ReceiptViewSet(viewsets.ModelViewSet):
     This view set automatically provides `list` and `detail` on Receipts.
     """
     queryset = Receipt.objects.all()
+    permission_classes = (IsAdminUser,)
     serializer_class = ReceiptSerializer
     filter_class = ReceiptFilter
     filter_backends = (filters.SearchFilter,filters.OrderingFilter,filters.DjangoFilterBackend,)
@@ -78,6 +79,7 @@ class FarmViewSet(viewsets.ModelViewSet):
     This view show Farmer's Farm
     """
     queryset = Farm.objects.all()
+    permission_classes = (IsAuthenticated,)
     serializer_class = FarmSerializer
     filter_fields = ('farm_id', 'parish', 'farmer')
     filter_backends = (filters.SearchFilter,filters.OrderingFilter,filters.DjangoFilterBackend,)
@@ -102,6 +104,7 @@ class CropViewSet(viewsets.ModelViewSet):
     """
 
     queryset = Crop.objects.all()
+    permission_classes = (IsAuthenticated,)
     serializer_class = CropSerializer
     filter_class = CropFilter
     filter_backends = (filters.SearchFilter,filters.OrderingFilter,filters.DjangoFilterBackend,)
@@ -124,6 +127,7 @@ class LivestockViewSet(viewsets.ModelViewSet):
     """
 
     queryset = Livestock.objects.all()
+    permission_classes = (IsAuthenticated,)
     serializer_class = LivestockSerializer
     filter_class = LivestockFilter
     filter_backends = (filters.SearchFilter,filters.OrderingFilter,filters.DjangoFilterBackend,)
@@ -143,6 +147,7 @@ class PriceViewSet(viewsets.ModelViewSet):
     """
 
     queryset = Price.objects.all()
+    permission_classes = (IsAuthenticated,)
     serializer_class = PriceSerializer
     filter_class = PriceFilter
     filter_backends = (filters.SearchFilter,filters.OrderingFilter,filters.DjangoFilterBackend,)
