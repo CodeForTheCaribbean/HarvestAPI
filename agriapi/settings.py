@@ -1,4 +1,6 @@
 # Django settings for agriapi project.
+import os
+
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -15,6 +17,7 @@ DATABASES = {
         'NAME': 'harvest_api',
         'USER': 'harvest_api_user',
         'HOST': 'localhost',
+        'PASSWORD': 'harvest',
         'PORT': '',
     }
 }
@@ -110,6 +113,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    os.path.join(os.path.dirname(__file__), 'template').replace('\\','/'),
 )
 
 INSTALLED_APPS = (
@@ -120,10 +124,13 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
     'farmers',
     'south',
     'rest_framework_swagger',
     'django_filters',
+    'registration',
+    'django.contrib.humanize',
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
@@ -186,6 +193,14 @@ STATICFILES_DIRS = (
 #add pagination for API
 REST_FRAMEWORK = {
     'PAGINATE_BY': 10,
-    'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',)
-
+    'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    )
 }
+
+ACCOUNT_ACTIVATION_DAYS = 7 # One-week activation window; you may, of course, use a different value.
+
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 1025
