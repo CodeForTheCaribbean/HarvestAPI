@@ -1,3 +1,5 @@
+agriapi/local_settings.py
+
 venv
 *.pyc
 staticfiles

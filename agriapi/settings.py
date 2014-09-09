@@ -2,7 +2,7 @@
 import os
 
 
-DEBUG = True
+DEBUG = False 
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -202,5 +202,8 @@ REST_FRAMEWORK = {
 
 ACCOUNT_ACTIVATION_DAYS = 7 # One-week activation window; you may, of course, use a different value.
 
-EMAIL_HOST = 'localhost'
-EMAIL_PORT = 1025
+#local settings
+try:
+    from local_settings import *
+except ImportError:
+    pass
