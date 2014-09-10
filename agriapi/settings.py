@@ -1,6 +1,6 @@
 # Django settings for agriapi project.
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -8,17 +8,6 @@ ADMINS = (
 )
 
 MANAGERS = ADMINS
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'harvest_api',
-        'USER': 'harvest_api_user',
-        'HOST': 'localhost',
-        'PORT': '',
-    }
-}
-
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
@@ -199,3 +188,10 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     )
 }
+
+#local settings
+try:
+    from local_settings import *
+except ImportError:
+    pass
+

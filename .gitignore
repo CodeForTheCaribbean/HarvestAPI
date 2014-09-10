@@ -1,7 +1,12 @@
-
+#don't put migrations in repo
 farmers/migrations/*
 
+#local settings file
+agriapi/local_settings.py
+
+#virtual environment
 venv
+
 *.pyc
 staticfiles
 
