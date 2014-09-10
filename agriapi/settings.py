@@ -164,14 +164,12 @@ ALLOWED_HOSTS = ['*']
 
 # Static asset configuration
 import os
-
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = 'staticfiles'
-STATIC_ROOT= os.path.join(BASE_DIR,'staticfiles/')
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
+    os.path.join(PROJECT_PATH, 'static'),
 )
 
 #add pagination for API
