@@ -1,6 +1,10 @@
 # Django settings for agriapi project.
 import os
 
+from os import environ
+
+# Helper lambda for gracefully degrading environmental variables:
+env = lambda e, d: environ[e] if environ.has_key(e) else d
 
 DEBUG = True 
 TEMPLATE_DEBUG = DEBUG
@@ -214,7 +218,7 @@ EMAIL_HOST_USER = env('EMAIL_HOST_USER', 'slashrootslabs@gmail.com')
 EMAIL_PORT = env('EMAIL_PORT', 587)
  
 # See: https://docs.djangoproject.com/en/1.3/ref/settings/#email-subject-prefix
-EMAIL_SUBJECT_PREFIX = '[%s] ' % SITE_NAME
+EMAIL_SUBJECT_PREFIX = ''
  
 # See: https://docs.djangoproject.com/en/1.3/ref/settings/#email-use-tls
 EMAIL_USE_TLS = True
