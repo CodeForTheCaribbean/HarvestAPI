@@ -1,4 +1,11 @@
 from django.db import models
+from rest_framework.authtoken.models import Token
+
+#@receiver(post_save, sender=User)
+#def create_auth_token(sender, instance=None, created=False, **kwargs):
+#    if created:
+#        Token.objects.create(user=instance)
+
 
 class Farmer(models.Model):
 
@@ -16,22 +23,16 @@ class Farmer(models.Model):
     agri_activity = models.CharField(max_length=150, null=True, default='')
     owner = models.ForeignKey('auth.User', related_name='farmers', default='1', null=True)
     last_updated = models.DateTimeField(auto_now_add=True, null=True)
-#    receipts = models.ForeignKey(Receipt, related_name='farmers', null=True)
+#    receipts = models.ForeignKey('Receipt', related_name='receipts', null=True)
 
     class Meta:
         ordering = ('last_updated',)
 
     def __unicode__(self):
-        # dirty IF
-        if self.alias and self.cell_number:
-            return ' Name - %s "%s" %s Cell %s' % ( self.first_name, self.alias, self.last_name, self.cell_number)
-        elif self.cell_number:
-            return ' Name - %s %s Cell %s' % ( self.first_name, self.last_name, self.cell_number)
-        else:
-            return ' Name - %s %s' % ( self.first_name, self.last_name)
+            return 'Farm Activity: %s' % (self.agri_activity)
 
 class Receipt(models.Model):
-#    farmer_idx = models.CharField(max_length=100, null=False, default='')
+
     receipt_no =  models.CharField(max_length=100, null=False, default='', primary_key=True)
     rec_range1 = models.CharField(max_length=100, null=True, default='')
     rec_range2 = models.CharField(max_length=100, null=True, default='')
@@ -71,7 +72,7 @@ class Crop(models.Model):
 
     crop_name = models.CharField(max_length=100, default='')
     common_name = models.CharField(max_length=30, default='', null=True)
-    estimated_vol = models.CharField(max_length=50, default='', null=True)
+    estimated_vol = models.DecimalField(max_digits=10, default='', null=True, decimal_places=2)
     variety = models.CharField(max_length=50, default='', null=True)
     plant_date = models.CharField(max_length=50, default='', null=True)
     count = models.CharField(max_length=50, default='', null=True)
@@ -84,4 +85,31 @@ class Crop(models.Model):
         ordering = ('crop_name',)
 
 
+class Livestock(models.Model):
 
+    livestock_name = models.CharField(max_length=100, default='')
+    count = models.CharField(max_length=50, default='', null=True)
+    capacity = models.CharField(max_length=50, default='', null=True)
+    stage = models.CharField(max_length=50, default='', null=True)
+    farm = models.ForeignKey(Farm)
+
+    class Meta:
+        ordering = ('livestock_name',)
+
+class Price(models.Model):
+
+    price_id =  models.CharField(max_length=100, null=False, default='', primary_key=True)
+    price  = models.DecimalField(max_digits=10, default='', null=True, decimal_places=2)
+    public = models.CharField(max_length=10, default='', null=True)
+    price_point = models.CharField(max_length=50, default='', null=True)
+    parish = models.CharField(max_length=50, default='', null=True)
+    commodity = models.CharField(max_length=50, default='', null=True)
+    crop_code = models.CharField(max_length=50, default='', null=True)
+    units = models.CharField(max_length=50, default='', null=True)
+    variety = models.CharField(max_length=50, default='', null=True)
+    batch_date = models.DateField(max_length=50, default='', null=True)
+    published_on = models.DateField(max_length=50, default='', null=True)
+    extension = models.CharField(max_length=50, default='', null=True)
+
+    class Meta:
+        ordering = ('published_on',)

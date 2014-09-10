@@ -9,6 +9,8 @@ router.register(r'users', views.UserViewSet)
 router.register(r'receipts', views.ReceiptViewSet)
 router.register(r'farms', views.FarmViewSet)
 router.register(r'crops', views.CropViewSet)
+router.register(r'livestock', views.LivestockViewSet)
+router.register(r'prices', views.PriceViewSet)
 
 # The API URLs are now determined automatically by the router.
 # Additionally, we include the login URLs for the browseable API.
@@ -16,6 +18,6 @@ router.register(r'crops', views.CropViewSet)
 urlpatterns = patterns('',
     url(r'^', include(router.urls)),
     url(r'^docs/', include('rest_framework_swagger.urls')),
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
-
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^users/register', 'farmers.views.register'),
 )
