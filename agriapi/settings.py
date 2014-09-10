@@ -197,6 +197,33 @@ REST_FRAMEWORK = {
     )
 }
 
+########## EMAIL CONFIGURATION
+# See: https://docs.djangoproject.com/en/1.3/ref/settings/#email-backend
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+ 
+# See: https://docs.djangoproject.com/en/1.3/ref/settings/#email-host
+EMAIL_HOST = env('EMAIL_HOST', 'smtp.gmail.com')
+ 
+# See: https://docs.djangoproject.com/en/1.3/ref/settings/#email-host-password
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', 'OWZttGFTb')
+ 
+# See: https://docs.djangoproject.com/en/1.3/ref/settings/#email-host-user
+EMAIL_HOST_USER = env('EMAIL_HOST_USER', 'slashrootslabs@gmail.com')
+ 
+# See: https://docs.djangoproject.com/en/1.3/ref/settings/#email-port
+EMAIL_PORT = env('EMAIL_PORT', 587)
+ 
+# See: https://docs.djangoproject.com/en/1.3/ref/settings/#email-subject-prefix
+EMAIL_SUBJECT_PREFIX = '[%s] ' % SITE_NAME
+ 
+# See: https://docs.djangoproject.com/en/1.3/ref/settings/#email-use-tls
+EMAIL_USE_TLS = True
+ 
+# See: https://docs.djangoproject.com/en/1.3/ref/settings/#server-email
+SERVER_EMAIL = EMAIL_HOST_USER
+########## END EMAIL CONFIGURATION
+ 
+
 
 ACCOUNT_ACTIVATION_DAYS = 7 # One-week activation window; you may, of course, use a different value.
 
@@ -205,4 +232,6 @@ try:
     from local_settings import *
 except ImportError:
     pass
+
+
 
