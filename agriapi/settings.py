@@ -1,6 +1,8 @@
 # Django settings for agriapi project.
+import os
 
-DEBUG = True
+
+DEBUG = False 
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -8,6 +10,9 @@ ADMINS = (
 )
 
 MANAGERS = ADMINS
+
+
+
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
@@ -99,6 +104,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    os.path.join(os.path.dirname(__file__), 'template').replace('\\','/'),
 )
 
 INSTALLED_APPS = (
@@ -109,10 +115,13 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
     'farmers',
     'south',
     'rest_framework_swagger',
-    'rest_framework.authtoken', 
+    'django_filters',
+    'registration',
+    'django.contrib.humanize',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     'django_filters',
@@ -187,6 +196,9 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     )
 }
+
+
+ACCOUNT_ACTIVATION_DAYS = 7 # One-week activation window; you may, of course, use a different value.
 
 #local settings
 try:

@@ -1,6 +1,8 @@
 # Django settings for agriapi project.
+import os
 
-DEBUG = True
+
+DEBUG = False 
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -9,20 +11,24 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
+<<<<<<< .merge_file_ZUpR0n
+=======
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'harvest_api',
         'USER': 'harvest_api_user',
         'HOST': 'localhost',
+        'PASSWORD': 'harvest',
         'PORT': '',
     }
 }
 
 
+>>>>>>> .merge_file_Is2Vzn
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.herokuapp.com']
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -110,6 +116,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    os.path.join(os.path.dirname(__file__), 'template').replace('\\','/'),
 )
 
 INSTALLED_APPS = (
@@ -120,10 +127,17 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
     'farmers',
     'south',
     'rest_framework_swagger',
+<<<<<<< .merge_file_ZUpR0n
     'rest_framework.authtoken', 
+=======
+    'django_filters',
+    'registration',
+    'django.contrib.humanize',
+>>>>>>> .merge_file_Is2Vzn
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     'django_filters',
@@ -165,13 +179,7 @@ LOGGING = {
 #added for Heroku
 # Parse database configuration from $DATABASE_URL
 import dj_database_url
-<<<<<<< HEAD
-#DATABASES['default'] =  dj_database_url.config(default='postgres://agriapi:agriapi@localhost:5432/agriapi')
-# DATABASES['default'] =  dj_database_url.config(default='postgres://bejmjahavbccqk:9othdpQ6O-Fm3tMGa557Io9sHT@ec2-54-204-24-154.compute-1.amazonaws.com:5432/dcjpcapsa2saq4')
-=======
-DATABASES['default'] =  dj_database_url.config(default='postgres://agriapi:agriapi@localhost:5432/agriapi')
-#DATABASES['default'] =  dj_database_url.config(default='postgres://bejmjahavbccqk:9othdpQ6O-Fm3tMGa557Io9sHT@ec2-54-204-24-154.compute-1.amazonaws.com:5432/dcjpcapsa2saq4')
->>>>>>> f445ced283d981c4bb410202a8fbaa27019dfc53
+DATABASES = {'default': dj_database_url.config(default='postgres://localhost')}
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -181,16 +189,17 @@ ALLOWED_HOSTS = ['*']
 
 # Static asset configuration
 import os
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = 'staticfiles'
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
+    os.path.join(PROJECT_PATH, 'static'),
 )
 
 #add pagination for API
 REST_FRAMEWORK = {
+<<<<<<< .merge_file_ZUpR0n
     'PAGINATE_BY': 10, #API defaults to 10 return results
     'PAGINATE_BY_PARAM': 'page_size',  # Allow client to override, using `?page_size=xxx`.
     'MAX_PAGINATE_BY': 100,             # Maximum limit allowed when using `?page_size=xxx`.
@@ -204,3 +213,25 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     )
 }
+
+=======
+    'PAGINATE_BY': 10,
+    'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    )
+}
+
+ACCOUNT_ACTIVATION_DAYS = 7 # One-week activation window; you may, of course, use a different value.
+
+>>>>>>> .merge_file_Is2Vzn
+#local settings
+try:
+    from local_settings import *
+except ImportError:
+    pass
+<<<<<<< .merge_file_ZUpR0n
+
+=======
+>>>>>>> .merge_file_Is2Vzn

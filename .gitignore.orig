@@ -1,3 +1,4 @@
+<<<<<<< .merge_file_d8PiPc
 #don't put migrations in repo
 farmers/migrations/*
 
@@ -8,6 +9,7 @@ agriapi/local_settings.py
 =======
 agriapi/local_settings.py
 
+>>>>>>> .merge_file_DEON8d
 venv
 
 *.pyc
