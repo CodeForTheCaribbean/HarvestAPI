@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, url, include
 from farmers import views
 from rest_framework.routers import DefaultRouter
+from agriapi import settings
 
 # Create a router and register our viewsets with it.
 router = DefaultRouter()
@@ -21,3 +22,7 @@ urlpatterns = patterns('',
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^users/register', 'farmers.views.register'),
 )
+
+urlpatterns += patterns('',  
+    (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT}),  
+)  
