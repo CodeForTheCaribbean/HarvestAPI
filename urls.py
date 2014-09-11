@@ -6,8 +6,8 @@ from agriapi import settings
 # Create a router and register our viewsets with it.
 router = DefaultRouter()
 router.register(r'farmers', views.FarmerViewSet)
-router.register(r'users', views.UserViewSet)
-router.register(r'receipts', views.ReceiptViewSet)
+#router.register(r'users', views.UserViewSet)
+#router.register(r'receipts', views.ReceiptViewSet)
 router.register(r'farms', views.FarmViewSet)
 router.register(r'crops', views.CropViewSet)
 router.register(r'livestock', views.LivestockViewSet)
