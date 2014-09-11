@@ -33,7 +33,7 @@ class FarmerViewSet(viewsets.ModelViewSet):
     authentication_classes = (BasicAuthentication, SessionAuthentication, TokenAuthentication)
     queryset = Farmer.objects.all()
     serializer_class = FarmerSerializer
-    permission_classes = (IsAdminUser,)#(permissions.IsAuthenticatedOrReadOnly,
+    permission_classes = (IsAuthenticated,)#(permissions.IsAuthenticatedOrReadOnly,
                          # IsOwnerOrReadOnly,)
     filter_fields = ('farmer_idx','farmer_id','first_name','last_name','alias','res_address', 'res_parish','tel_number','cell_number','verified_status','dob','agri_activity')
     filter_backends = (filters.SearchFilter,filters.OrderingFilter,filters.DjangoFilterBackend,)
