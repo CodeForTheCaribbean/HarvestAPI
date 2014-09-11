@@ -22,7 +22,8 @@ urlpatterns = patterns('',
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^users/register', 'farmers.views.register'),
     url(r'^user/', include('registration.backends.default.urls')),
-    url(r'^get-key/', 'rest_framework.authtoken.views.obtain_auth_token')
+    url(r'^get-key/', 'rest_framework.authtoken.views.obtain_auth_token'),
+    url(r'postmark_bounce/', 'postmarkBounces.postHandler'),
 )
 
 urlpatterns += patterns('',  
