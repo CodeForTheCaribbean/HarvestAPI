@@ -7,7 +7,6 @@ from rest_framework import permissions
 from django.contrib.auth.models import User
 from farmers.serializers import UserSerializer
 from farmers.permissions import IsOwnerOrReadOnly
-from rest_framework import renderers
 from rest_framework.decorators import api_view
 from rest_framework.reverse import reverse
 from rest_framework import renderers
