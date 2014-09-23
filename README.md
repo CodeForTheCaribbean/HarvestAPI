@@ -1,11 +1,11 @@
-agriapi
+HarvestAPI
 =======
 
-Agricultural API
+Agricultural API - currently provides Jamaica agriculture data, eg. prices, crops, farms.
 
-Built with Django based on http://django-rest-framework.org/
+Built with Django and REST framework http://django-rest-framework.org/
 
-The code is accessible on the web: http://agriapi.herokuapp.com/ 
+A demonstartion of the API is accessible on the web: http://harvestdata.herokuapp.com/
 
 TODO:
 * review resources, eg. add 'verified date' field, remove 'farmer_idx' field, etc.
@@ -15,6 +15,8 @@ TODO:
 * work on defining international data standards for crops
 
 #API Documentation: 
+- Temporary API Documentation page is here: http://harvestapi.developdigitally.com
+
 -Rationale(Why): 
 Increasingly stakeholders are requesting more agricultural information from the Ministry of Agriculture and Fisheries and the Rural Agricultural Development Authority.
 
@@ -31,8 +33,7 @@ Security forces/interests
 Business interests
 -Where
 Managed cloud based solution
--When
-December 2013
+
 ##-How
 API accessible online
 Secure levels of access to the data using user roles and API keys
@@ -40,10 +41,10 @@ Procedure (requesting access, etc)
 System administration
 Terms of Use
 Managing timely updates of the data(automated/batch)
-Technical explanation of how (document this with Lisa)
+Technical explanation of how (document this with RADA tech team)
 
 ##API Resources:
-Below are the various types of data/resources that the API will provide.
+Below are the various types of data/resources that the API currently provides.
 Farmers - Listing of farmers in ABIS
 Receipts - Listing of receipt books sold to farmers
 Farms - Listing of farms/properties, one farmer can have more than one farm
@@ -72,12 +73,3 @@ Prices - Listing of crop price data collected by the Ministry of Agriculture and
 | Main_Agri_Activity_Code: int      | VARCHAR   |                | agri_activity   |             |
 
 
-###Receipts
-| Field name      | Date Type | Security Level | Nomenclature         | Field range |
-|-----------------|-----------|----------------|----------------------|-------------|
-| IDX_StakeHolder | INT       |                | farmer_idx           |             |
-| Receipt_No      | INT       |                | receipt_no           |             |
-| range1          | INT       |                | rec_range1           |             |
-| range2          | INT       |                | rec_range2           |             |
-| investigationyn | INT       |                | investigation_status |             |
-| remarks         | VARCHAR   |                | remarks              |             |
