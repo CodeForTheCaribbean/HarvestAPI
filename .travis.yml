@@ -4,4 +4,4 @@ python:
 env:
   - DJANGO=1.5.5
 script:
-  - python setup.py test
+  - python manage.py test
