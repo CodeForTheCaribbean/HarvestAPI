@@ -131,7 +131,7 @@ class LivestockViewSet(viewsets.ModelViewSet):
     serializer_class = LivestockSerializer
     filter_class = LivestockFilter
     filter_backends = (filters.SearchFilter,filters.OrderingFilter,filters.DjangoFilterBackend,)
-    search_fields = ('livestock_name')
+    search_fields = ('livestock_name',)
     ordering_fields = ('livestock_name', 'farm', 'farm_id')
 
 
