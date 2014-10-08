@@ -73,6 +73,16 @@ class ReceiptViewSet(viewsets.ModelViewSet):
     search_fields = ('remarks')
     ordering_fields = ('farmer', 'investigation_status')
 
+class FarmFilter(django_filters.FilterSet):
+
+    farmer_id = django_filters.CharFilter(name="farmer__farmer_id")
+    min_size = django_filters.NumberFilter(name="farm_size", lookup_type='gte')
+    max_size = django_filters.NumberFilter(name="farm_size", lookup_type='lte')
+    class Meta:
+        model = Farm
+        fields = ['farmer_idx','farmer_id','farm_address','farm_id','parish','district','extension','farm_size','lat','long','farm_status','farmer','min_size','max_size']
+
+
 
 class FarmViewSet(viewsets.ModelViewSet):
     """
@@ -81,10 +91,10 @@ class FarmViewSet(viewsets.ModelViewSet):
     queryset = Farm.objects.all()
     permission_classes = (IsAuthenticated,)
     serializer_class = FarmSerializer
-    filter_fields = ('farm_id', 'parish', 'farmer')
+    filter_class = FarmFilter
     filter_backends = (filters.SearchFilter,filters.OrderingFilter,filters.DjangoFilterBackend,)
-    search_fields = ('parish', 'farmer')
-    ordering_fields = ('parish', 'farmer')
+    search_fields = ('parish','farm_address','farm_id','farmer_idx', 'extension', 'farm_status', 'farm_size')
+    ordering_fields = ('parish','district')
 
 
 class CropFilter(django_filters.FilterSet):
@@ -137,9 +147,12 @@ class LivestockViewSet(viewsets.ModelViewSet):
 
 class PriceFilter(django_filters.FilterSet):
 
+    min_price = django_filters.NumberFilter(name="price", lookup_type='gte')
+    max_price = django_filters.NumberFilter(name="price", lookup_type='lte')
+
     class Meta:
         model = Price
-        fields = ['price_id','price','public','price_point','parish','commodity','crop_code','units','variety','batch_date','published_on','extension']
+        fields = ['price_id','price','public','price_point','parish','commodity','crop_code','units','variety','batch_date','published_on','extension','min_price','max_price',]
 
 class PriceViewSet(viewsets.ModelViewSet):
     """
