@@ -2,6 +2,10 @@ from django.conf.urls import patterns, url, include
 from farmers import views
 from rest_framework.routers import DefaultRouter
 from agriapi import settings
+from django.contrib.auth.models import User
+
+from django.contrib import admin
+admin.autodiscover()
 
 # Create a router and register our viewsets with it.
 router = DefaultRouter()
@@ -23,6 +27,15 @@ urlpatterns = patterns('',
     url(r'^users/register', 'farmers.views.register'),
     url(r'^user/', include('registration.backends.default.urls')),
     url(r'^get-key/', 'rest_framework.authtoken.views.obtain_auth_token'),
+    # url(r'^$', '{{ project_name }}.views.home', name='home'),
+    # url(r'^{{ project_name }}/', include('{{ project_name }}.foo.urls')),
+
+    # Uncomment the admin/doc line below to enable admin documentation:
+    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+
+    # Uncomment the next line to enable the admin:
+    url(r'^admin/', include(admin.site.urls)),
+
 )
 
 urlpatterns += patterns('',  
