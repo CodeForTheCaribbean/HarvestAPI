@@ -1,1 +1,0 @@
-Activate your harvestapi.io account - you have {{ expiration_days }} days!
