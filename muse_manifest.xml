@@ -1,0 +1,32 @@
+<manifest alg="2" build="232" opt="false" iceEnabled="true">
+  <folder name="css">
+    <file name="site_global.css" crc="397963719"/>
+    <file name="index.css" crc="4156801686" ref="index"/>
+  </folder>
+  <folder name="scripts">
+    <file name="jquery-1.8.3.min.js" crc="3828297711" ref="index"/>
+    <file name="museutils.js" crc="3880880085" ref="index"/>
+    <file name="jquery.watch.js" crc="4199601726" ref="index"/>
+  </folder>
+  <folder name="images">
+    <file name="farmer_photo_bg.jpg" crc="3802172284" ref="index"/>
+    <file name="vector_bg.jpg" crc="100268169" ref="index"/>
+    <file name="farmer.png" crc="199444993" ref="index"/>
+    <file name="gradient-u94.jpg" crc="4165633547" ref="index"/>
+    <file name="harvest_logo.png" crc="221814743" ref="index"/>
+    <file name="money-grow.png" crc="3915845165" ref="index"/>
+    <file name="icon-tracktor.png" crc="407104797" ref="index"/>
+    <file name="icon-price.png" crc="489206976" ref="index"/>
+    <file name="icon-farmer.png" crc="4129042097" ref="index"/>
+    <file name="project_agro.png" crc="4066408592" ref="index"/>
+    <file name="clever_grocer.png" crc="3884278643" ref="index"/>
+    <file name="contribute.png" crc="4232047523" ref="index"/>
+    <file name="large_logos.jpg" crc="465805545" ref="index"/>
+    <file name="rory.jpg" crc="508206683" ref="index"/>
+    <file name="staysean.jpg" crc="4190735926" ref="index"/>
+    <file name="varun.jpg" crc="26390646" ref="index"/>
+    <file name="david.jpg" crc="285674871" ref="index"/>
+    <file name="afifa.jpg" crc="427531414" ref="index"/>
+  </folder>
+  <file name="index.html" crc="3775143333" mt="1394542382019" redirect="true"/>
+</manifest>
