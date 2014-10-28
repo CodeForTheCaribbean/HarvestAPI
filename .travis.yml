@@ -1,7 +1,6 @@
 # Blacklisting example
 branches:
   except:
-    - develop
     - gh-pages
 
 language: python
