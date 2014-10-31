@@ -1,28 +1,20 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-{% load staticfiles %}
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-
+<!DOCTYPE html>
+<html>
 
 	<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>HarvestAPI Main Page</title>
     <meta name="viewport" content="width=device-width">
     <meta name="description" content="">
     <link rel="canonical" href="https://badbruce07.github.io/">
-    <style>
-      input.required, .errors {
-        border: 2px solid red;
-      }
-    </style>
-    <title>HarvestAPI {% block title %}Tagging Exploration{% endblock %}</title>
 
 
     <!-- Custom CSS & Bootstrap Core CSS - Uses Bootswatch Flatly Theme: http://bootswatch.com/flatly/ -->
-<link href="{% static 'registration/style.css' %}" rel="stylesheet" media="screen">
+    <link rel="stylesheet" href="./style.css">
 
     <!-- Custom Fonts -->
-    <link rel="stylesheet" href="{% static 'registration/css/font-awesome/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="./css/font-awesome/css/font-awesome.min.css">
     <link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
     <link href='http://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
     <link href="http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
@@ -50,7 +42,7 @@
       <div class="navbar-header page-scroll">
 
          <a class="navbar-brand page-scroll" href="#page-top">
-         	<img src="{{ STATIC_URL }}registration/img/harvest_logo.png" class="harvest_icon"alt="HarvestAPI">
+         	<img src="./img/harvest_logo.png" class="harvest_icon"alt="HarvestAPI">
          </a>
    	</div>
 
@@ -83,7 +75,7 @@
                    
                                         
 					<li id="fork_stretch"> 
-						<a href="https://github.com/codeforthecaribbean/harvestapi"><img id ="github_link" src="{{ STATIC_URL }}registration/img/platform/forkme_right_red_aa0000.png"></a>
+						<a href="https://github.com/codeforthecaribbean/harvestapi"><img id ="github_link" src="./img/platform/forkme_right_red_aa0000.png"></a>
 					</li>                
           	</ul>    
  		</div>      
@@ -122,7 +114,7 @@
 	         <div class="row text-center">
             	<div class="col-md-4">
                     
-               	<h4 class="service-heading"><img src="{{ STATIC_URL }}registration/img/money-grow.png" alt="Money-Grow"></h4>
+               	<h4 class="service-heading"><img src="./img/money-grow.png" alt="Money-Grow"></h4>
                     
               	</div>
               	
@@ -166,17 +158,17 @@
       	
       	<div class="row text-center">
 	        	<div class="col-md-4">
-					<img src="{{ STATIC_URL }}registration/img/services/icon-tracktor.png" alt="">
+					<img src="./img/services/icon-tracktor.png" alt="">
                <h4 id="u140-4"> Agriculture Production Data </h4>     
           	</div>
                 
             <div class="col-md-4">
-            	<img src="{{ STATIC_URL }}registration/img/services/icon-price.png" alt="">
+            	<img src="./img/services/icon-price.png" alt="">
                <h4 id="u140-4"> Weekly Price Data </h4>
           	</div>
                 
             <div class="col-md-4">
-            	<img src="{{ STATIC_URL }}registration/img/services/icon-farmer.png" alt="">
+            	<img src="./img/services/icon-farmer.png" alt="">
                <h4 id="u140-4"> Producer Information </h4>
             </div>
 			</div>
@@ -192,7 +184,7 @@
 		<div class="row text-center">
       
       	<div class="row">
-
+         	<div class="col-md-4"></div>
          	<div class="col-md-4">
                    
             	<p class="text-muted1"> Who should use it? </p>
@@ -215,17 +207,7 @@
                
          	</div>
                 
-	 <div class="col-md-4">
-	    <div id="sidebar">
-		{% block sidebar %}{% endblock %}
-	    </div>
-
-	    <div id="content">
-		{% block content %}{% endblock %}
-		{% block main_content %}{% endblock %}
-	    </div>
-	</div>
-         	
+          	
 
      	</div>
 	</div>
@@ -237,7 +219,7 @@
    	<div class="row">
 			
 			<div class="col-md-4">
-           	<img src="{{ STATIC_URL }}registration/img/platform/contribute.png" alt="">               
+           	<img src="./img/platform/contribute.png" alt="">               
          </div>
          
          <div class="col-md-6">
@@ -271,7 +253,7 @@
      		<div class="col-lg-12 text-center">
          	<h2 class="section-heading"> Supporting Collaboration </h2>
             <p class="text-muted2">HarvestAPI was made possible by a collaboration between </p>
-           	<img src="{{ STATIC_URL }}registration/img/platform/large_logos.jpg" alt="">
+           	<img src="./img/platform/large_logos.jpg" alt="">
             <p class="text-muted3"> Built and designed with love by: </p>
       	</div> 
       	               
@@ -282,35 +264,35 @@
 			<div>
 				<div class="col-md-2">
 					<ul class="list-contributors">
-						<li> <img src="{{ STATIC_URL }}registration/img/platform/rory.jpg" alt=""> </li>
+						<li> <img src="./img/platform/rory.jpg" alt=""> </li>
 						<li id="names-main"> Rory Walker </li>
 						<li id="names"> @redrory </li>
 					<ul>				
 				</div>
 				<div class="col-md-2">
 					<ul class="list-contributors">
-						<li> <img src="{{ STATIC_URL }}registration/img/platform/staysean.jpg" alt=""> </li>
+						<li> <img src="./img/platform/staysean.jpg" alt=""> </li>
 						<li id="names-main1"> Staysean Daley </li>
 						<li id="names1"> @kraasimages </li>
 					<ul>				
 				</div>
 				<div class="col-md-2">
 					<ul class="list-contributors">
-						<li> <img src="{{ STATIC_URL }}registration/img/platform/varun.jpg" alt=""> </li>
+						<li> <img src="./img/platform/varun.jpg" alt=""> </li>
 						<li id="names-main"> Varun Baker </li>
 						<li id="names4"> @varunbaker </li>
 					<ul>				
 				</div>
 				<div class="col-md-2">
 					<ul class="list-contributors">
-						<li> <img src="{{ STATIC_URL }}registration/img/platform/david.jpg" alt=""> </li>
+						<li> <img src="./img/platform/david.jpg" alt=""> </li>
 						<li id="names-main2"> David Soutar </li>
 						<li id="names2"> @davidsoutar </li>
 					<ul>				
 				</div>
 				<div class="col-md-2">
 					<ul class="list-contributors">
-						<li> <img src="{{ STATIC_URL }}registration/img/platform/afifa.jpg" alt=""> </li>
+						<li> <img src="./img/platform/afifa.jpg" alt=""> </li>
 						<li id="names-main"> Afifa Harris </li>
 						<li id="names3"> @djafifa </li>
 					<ul>				
@@ -333,21 +315,21 @@
     </footer>
  
     	 <!-- jQuery Version 1.11.0 -->
-    <script src="{% static 'registration/js/jquery-1.11.0.js' %}"></script>
+    <script src="./js/jquery-1.11.0.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
-    <script src="{% static 'registration/js/bootstrap.min.js' %}"></script>
+    <script src="./js/bootstrap.min.js"></script>
 
     <!-- Plugin JavaScript -->
-    <script src="{% static 'registration/js/jquery.easing.min.js' %}"></script>
-    <script src="{% static 'registration/js/classie.js' %}"></script>
-    <script src="{% static 'registration/js/cbpAnimatedHeader.js' %}"></script>
+    <script src="./js/jquery.easing.min.js"></script>
+    <script src="./js/classie.js"></script>
+    <script src="./js/cbpAnimatedHeader.js"></script>
 
     <!-- Contact Form JavaScript -->
-    <script src="{% static 'registration/js/jqBootstrapValidation.js' %}"></script>
+    <script src="./js/jqBootstrapValidation.js"></script>
 
     <!-- Custom Theme JavaScript -->
-    <script src="{% static 'registration/js/agency.js' %}"></script>
+    <script src="./js/agency.js"></script>
 
 
     </body>
