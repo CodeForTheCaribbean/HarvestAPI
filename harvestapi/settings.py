@@ -196,3 +196,8 @@ EMAIL_HOST_USER = 'app20072053@heroku.com'
 EMAIL_HOST_PASSWORD = 'rvqu8zlp'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+
+# Simplified static file serving.
+# https://warehouse.python.org/project/whitenoise/
+
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'

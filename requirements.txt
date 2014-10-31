@@ -15,4 +15,5 @@ gunicorn==18.0
 psycopg2==2.5.1
 pytz==2014.4
 static==0.4
+whitenoise==1.0.3
 wsgiref==0.1.2
