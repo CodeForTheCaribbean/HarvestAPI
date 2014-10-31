@@ -1,4 +1,4 @@
-# Django settings for agriapi project.
+# Django settings for harvestapi project.
 import os
 
 # Helper lambda for gracefully degrading environmental variables:
@@ -84,7 +84,7 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'agriapi.wsgi.application'
+WSGI_APPLICATION = 'harvestapi.wsgi.application'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -167,7 +167,7 @@ STATICFILES_DIRS = (
     os.path.join(PROJECT_PATH, 'static'),
 )
 
-#add pagination for API
+#pagination for API
 REST_FRAMEWORK = {
     'PAGINATE_BY': 10, #API defaults to 10 return results
     'PAGINATE_BY_PARAM': 'page_size',  # Allow client to override, using `?page_size=xxx`.

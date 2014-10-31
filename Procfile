@@ -1,1 +1,1 @@
-web: python ./manage.py collectstatic --noinput; gunicorn agriapi.wsgi --log-file -
+web: python ./manage.py collectstatic --noinput; gunicorn harvestapi.wsgi --log-file -

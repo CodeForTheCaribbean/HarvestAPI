@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, url, include
 from farmers import views
 from rest_framework.routers import DefaultRouter
-from agriapi import settings
+from harvestapi import settings
 from django.contrib.auth.models import User
 
 from django.contrib import admin
