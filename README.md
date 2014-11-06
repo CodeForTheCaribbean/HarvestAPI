@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/CodeForTheCaribbean/HarvestAPI.png?label=ready&title=Ready)](https://waffle.io/CodeForTheCaribbean/HarvestAPI)
 HarvestAPI
 =======
 
