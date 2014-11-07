@@ -3,6 +3,14 @@ from rest_framework import serializers
 from farmers.models import Farmer, Receipt, Farm, Crop, Livestock, Price
 from django.contrib.auth.models import User
 
+class FarmerPrivateSerializer(serializers.HyperlinkedModelSerializer):
+    owner = serializers.Field(source='owner.username')
+    receipts = serializers.HyperlinkedRelatedField(many=True, read_only=True,
+                                                 view_name='receipt-detail')
+    class Meta:
+        model = Farmer
+        fields = ('url','farmer_id','farmer_idx', 'res_parish','verified_status','dob','agri_activity','owner')
+
 class FarmerSerializer(serializers.HyperlinkedModelSerializer):
     owner = serializers.Field(source='owner.username')
     receipts = serializers.HyperlinkedRelatedField(many=True, read_only=True,
