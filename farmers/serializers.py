@@ -9,7 +9,7 @@ class FarmerPrivateSerializer(serializers.HyperlinkedModelSerializer):
                                                  view_name='receipt-detail')
     class Meta:
         model = Farmer
-        fields = ('url','farmer_id','farmer_idx', 'res_parish','verified_status','dob','agri_activity','owner')
+        fields = ('url','farmer_id','farmer_idx', 'res_parish','verified_status','agri_activity','owner')
 
 class FarmerSerializer(serializers.HyperlinkedModelSerializer):
     owner = serializers.Field(source='owner.username')
