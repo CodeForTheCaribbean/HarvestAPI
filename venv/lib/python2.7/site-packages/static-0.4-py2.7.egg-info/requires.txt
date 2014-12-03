@@ -1,0 +1,4 @@
+wsgiref
+
+[KidMagic]
+kid
