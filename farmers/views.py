@@ -1,5 +1,5 @@
 import django_filters
-from farmers.models import Farmer, Receipt, Farm, Crop, Livestock, Price
+from farmers.models import Farmer, Receipt, Farm, Crop, Livestock, Price #UserProfile
 from farmers.serializers import FarmerSerializer, ReceiptSerializer, FarmSerializer, CropSerializer, LivestockSerializer, PriceSerializer
  
 from rest_framework import generics
@@ -22,6 +22,21 @@ from rest_framework import status, serializers
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
+
+from farmers.forms import *
+
+from django.contrib import messages
+from django.conf import settings
+#from farmers.templates.registration import *
+
+from django.views.decorators.csrf import csrf_protect
+from django.core.context_processors import csrf
+from django.shortcuts import render_to_response, get_object_or_404, render, RequestContext
+from django.http import HttpResponseRedirect, HttpResponse
+from django.template import *
+from django.core.mail import send_mail
+import hashlib, datetime, random
+from django.utils import timezone
 
 
 class FarmerViewSet(viewsets.ModelViewSet):
@@ -186,4 +201,131 @@ def register(request):
         return Response(serialized._errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@csrf_protect
+def register_here(request):
+    """ User sign up form """
+    if request.method == 'POST':
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/user/register/complete')
+
+    args={}
+    
+    # builds the form securely
+    args.update(csrf(request))
+
+    args['form'] = RegistrationForm()
+    return render_to_response('registration/registration_form.html', args)
+
+
+def register_success(request):
+    return render_to_response('registration/registration_complete.html')
+
+def register_activate(request):
+    
+
+
+##    return render_to_response("/registration/registration_form.html",
+##                              locals(),
+##                              context_instance=RequestContext(request))
+
+
+
+##def register_complete(request):
+##
+##    """ User sign up form """
+##    if request.method == 'POST':
+##        form = RegistrationForm(request.POST)
+##        if form.is_valid():
+##            form.save()
+##            return HttpResponseRedirect('/user/register/complete')
+##
+##    args={}
+##    args.update(csrf(request))
+##
+##    args['form'] = RegistrationForm()
+##    print args
+##    return render_to_response("/registration/registration_form.html", args)
+    
+
+
+
+
+
+
+##
+##              username = form.cleaned_data['username']
+####            email = form.cleaned_data['email']
+####            password = form.cleaned_data['password1']
+##
+##        save_it = form.save(commit=False)
+##        save_it.save()
+##
+##        #send_mail(subject,message, from_email, to_list, fail_silently=True)
+##        subject = 'Thank you for joining HarvestAPI'
+##        message = 'Welcome to HarvestAPI! We appreciate your business./n We will be in touch'
+##        from_mail = settings.EMAIL_HOST_USER
+##        to_list = [save_it.email, settings.EMAIL_HOST_USER]
+##
+##        send_mail(subject, message, from_mail, to_list, fail_silently=True)
+##        
+##        
+##        messages.success(request, 'We will be in touch')
+##        return HttpResponseRedirect('user/register/complete')
+
+                                        
+            #salt = hashlib.sha1(str(random.random())).hexdigest()[:5]
+            #activation_key = hashlib.sha1(salt+email).hexdigest()            
+            #key_expires = datetime.datetime.today() + datetime.timedelta(2)
+
+            
+##          
+##          user = form.save()
+
+            # Get user by username
+            #user = User.objects.get(username=username)
+
+            #Create and save user profile
+            #new_profile = UserProfile(user=user, activation_key=activation_key,
+            #                          key_expires=key_expires)
+            #new_profile.save()
+
+            # Send email with activation key
+            #email_subject = 'Account confirmation'
+##           # email_body = "Hey %s, thanks for signing up. To activate your account, click this link \
+##                        within 48 hours http:harvest.herokuapp.com/user/activate/{{ activation_key }}/   \
+##                        If you didn't request this, you don't need to do anything; you won't receive \
+##                        any more email from us, and the account will expire automatically in \
+##                        {{ key_expires }} days" % (username, activation_key)
+##
+##            send_mail(email_subject, email_body, 'myemail@example.com', [email], fail_silently=False)
+            
+            #return render(request, "registration/registration_complete.html")
+    #else:
+    #    args['form'] = RegistrationForm()
+        
+    #return render(request, "registration/registration_form.html",
+    #            args)
+    
+
+# this function makes the confirmation of the user by an activation key
+def activate(request, activation_key):
+    #check if user is already logged in and if he is redirect him to some other url, e.g. home
+    if request.user.is_authenticated():
+        HttpResponseRedirect('/home', {'account':True})
+
+        # checking if there is UserProfile which matches the activation key (else show a 404 message)
+        user_profile = get_object_or_404(UserProfile, activation_key=activation_key)
+
+        #check if the activation key has expired, if it has then render confirm/expired
+        if user_profile.key_expires < timezone.now():
+            return render_to_response('registration/activate.html', {'account':False})
+
+        # if the key hasn't expired save user and set him as active and render some template to
+        # confirm activation 
+        user = user_profile.user
+        user.is_active = True
+        user.save()
+        return render_to_response('registration/activation_complete.html', {'success':True})
 

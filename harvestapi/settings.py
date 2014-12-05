@@ -149,7 +149,7 @@ LOGGING = {
 #added for Heroku
 # Parse database configuration from $DATABASE_URL
 import dj_database_url
-DATABASES = {'default': dj_database_url.config(default='postgres://postgres@localhost/harvest_api')}
+DATABASES = {'default': dj_database_url.config(default='postgres://postgres:password@localhost/harvest_api')}
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -184,6 +184,8 @@ REST_FRAMEWORK = {
 }
 
 ACCOUNT_ACTIVATION_DAYS = 7 # One-week activation window; you may, of course, use a different value.
+
+REGISTRATION_OPEN = True # If True, users can be able to register
 
 #local settings
 try:
