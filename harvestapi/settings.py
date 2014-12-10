@@ -203,3 +203,5 @@ EMAIL_USE_TLS = True
 # https://warehouse.python.org/project/whitenoise/
 
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
+DEFAULT_FROM_EMAIL = 'no-reply@slashroots.org'

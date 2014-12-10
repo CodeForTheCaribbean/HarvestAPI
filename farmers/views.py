@@ -1,10 +1,10 @@
 import django_filters
-from farmers.models import Farmer, Receipt, Farm, Crop, Livestock, Price #UserProfile
+from farmers.models import Farmer, Receipt, Farm, Crop, Livestock, Price, RegistrationManager, RegistrationProfile
 from farmers.serializers import FarmerSerializer, ReceiptSerializer, FarmSerializer, CropSerializer, LivestockSerializer, PriceSerializer
  
 from rest_framework import generics
 from rest_framework import permissions
-from django.contrib.auth.models import User
+from django.contrib.auth.models import *
 from farmers.serializers import UserSerializer
 from farmers.permissions import IsOwnerOrReadOnly
 from rest_framework.decorators import api_view
@@ -23,20 +23,33 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 
-from farmers.forms import *
-
 from django.contrib import messages
 from django.conf import settings
 #from farmers.templates.registration import *
 
 from django.views.decorators.csrf import csrf_protect
 from django.core.context_processors import csrf
-from django.shortcuts import render_to_response, get_object_or_404, render, RequestContext
+from django.shortcuts import render_to_response, get_object_or_404, render, RequestContext, redirect
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template import *
 from django.core.mail import send_mail
 import hashlib, datetime, random
 from django.utils import timezone
+
+from django.views.generic.base import TemplateView
+from django.views.generic.edit import FormView
+
+from farmers.signals import *
+from farmers.forms import RegistrationForm
+
+from django.contrib.sites.models import RequestSite
+from django.contrib.sites.models import Site
+
+User = get_user_model()
+
+USER_MODEL_FIELD_NAMES = [field.name for field in User._meta.fields]
+USER_REQUIRED_FIELDS = set([User.USERNAME_FIELD] + list(User.REQUIRED_FIELDS))
+USER_FORM_FIELDS = getattr(settings, 'USER_FORM_FIELDS', USER_REQUIRED_FIELDS)
 
 
 class FarmerViewSet(viewsets.ModelViewSet):
@@ -200,7 +213,6 @@ def register(request):
     else:
         return Response(serialized._errors, status=status.HTTP_400_BAD_REQUEST)
 
-
 @csrf_protect
 def register_here(request):
     """ User sign up form """
@@ -209,123 +221,173 @@ def register_here(request):
         if form.is_valid():
             form.save()
             return HttpResponseRedirect('/user/register/complete')
-
+        
     args={}
-    
+            
     # builds the form securely
     args.update(csrf(request))
-
+        
     args['form'] = RegistrationForm()
-    return render_to_response('registration/registration_form.html', args)
+    return render_to_response('registration/registration_form.html', args) 
 
 
 def register_success(request):
     return render_to_response('registration/registration_complete.html')
 
-def register_activate(request):
+"""
+    Views which allows users to create and activate accounts.
+"""
+
+class _RequestPassingFormView(FormView):
+    """
+    A version of FormView which passes extra arguments to certain methods,
+    notably passing the HTTP request nearly everywhere, to enable
+    finer-grained processing.
+    """
+    def get(self, request, *args, **kwargs):
+        # Pass request to get_form_class and get_form for per-request
+        # form control
+        form_class = self.get_form_class(request)
+        form = self.get_form(form_class)
+        return self.render_to_response(self.get_context_data(form=form))
     
-
-
-##    return render_to_response("/registration/registration_form.html",
-##                              locals(),
-##                              context_instance=RequestContext(request))
-
-
-
-##def register_complete(request):
-##
-##    """ User sign up form """
-##    if request.method == 'POST':
-##        form = RegistrationForm(request.POST)
-##        if form.is_valid():
-##            form.save()
-##            return HttpResponseRedirect('/user/register/complete')
-##
-##    args={}
-##    args.update(csrf(request))
-##
-##    args['form'] = RegistrationForm()
-##    print args
-##    return render_to_response("/registration/registration_form.html", args)
-    
-
-
-
-
-
-
-##
-##              username = form.cleaned_data['username']
-####            email = form.cleaned_data['email']
-####            password = form.cleaned_data['password1']
-##
-##        save_it = form.save(commit=False)
-##        save_it.save()
-##
-##        #send_mail(subject,message, from_email, to_list, fail_silently=True)
-##        subject = 'Thank you for joining HarvestAPI'
-##        message = 'Welcome to HarvestAPI! We appreciate your business./n We will be in touch'
-##        from_mail = settings.EMAIL_HOST_USER
-##        to_list = [save_it.email, settings.EMAIL_HOST_USER]
-##
-##        send_mail(subject, message, from_mail, to_list, fail_silently=True)
-##        
-##        
-##        messages.success(request, 'We will be in touch')
-##        return HttpResponseRedirect('user/register/complete')
-
-                                        
-            #salt = hashlib.sha1(str(random.random())).hexdigest()[:5]
-            #activation_key = hashlib.sha1(salt+email).hexdigest()            
-            #key_expires = datetime.datetime.today() + datetime.timedelta(2)
-
-            
-##          
-##          user = form.save()
-
-            # Get user by username
-            #user = User.objects.get(username=username)
-
-            #Create and save user profile
-            #new_profile = UserProfile(user=user, activation_key=activation_key,
-            #                          key_expires=key_expires)
-            #new_profile.save()
-
-            # Send email with activation key
-            #email_subject = 'Account confirmation'
-##           # email_body = "Hey %s, thanks for signing up. To activate your account, click this link \
-##                        within 48 hours http:harvest.herokuapp.com/user/activate/{{ activation_key }}/   \
-##                        If you didn't request this, you don't need to do anything; you won't receive \
-##                        any more email from us, and the account will expire automatically in \
-##                        {{ key_expires }} days" % (username, activation_key)
-##
-##            send_mail(email_subject, email_body, 'myemail@example.com', [email], fail_silently=False)
-            
-            #return render(request, "registration/registration_complete.html")
-    #else:
-    #    args['form'] = RegistrationForm()
+    def post(self, request, *args, **kwargs):
+        # Pass request to get_form_class and get_form for per-request
+        # form control.
+        form_class = self.get_form_class(request)
+        form = self.get_form(form_class)
         
-    #return render(request, "registration/registration_form.html",
-    #            args)
+        if form.is_valid():
+            # Pass request to form_valid.
+            return self.form_valid(request, form)
+        else:
+            return self.form_invalid(form)
+        
+    def get_form_class(self, request=None):
+        return super(_RequestPassingFormView, self).get_form_class()
     
+    def get_form_kwargs(self, request=None, form_class=None):
+        return super(_RequestPassingFormView, self).get_form_kwargs()
+    
+    def get_initial(self, request=None):
+        return super(_RequestPassingFormView, self).get_initial()
+    
+    def get_success_url(self, request=None, user=None):
+        # We need to be able to use the request and the new user when
+        # constructing success_url.
+        return super(_RequestPassingFormView, self).get_success_url()
+    
+    def form_valid(self, form, request=None):
+        return super(_RequestPassingFormView, self).form_valid(form)
+    
+    def form_invalid(self, form, request=None):
+        return super(_RequestPassingFormView, self).form_invalid(form)    
 
-# this function makes the confirmation of the user by an activation key
-def activate(request, activation_key):
-    #check if user is already logged in and if he is redirect him to some other url, e.g. home
-    if request.user.is_authenticated():
-        HttpResponseRedirect('/home', {'account':True})
 
-        # checking if there is UserProfile which matches the activation key (else show a 404 message)
-        user_profile = get_object_or_404(UserProfile, activation_key=activation_key)
+class RegistrationView(_RequestPassingFormView):
+    """
+        Base class for user registration views.
+    """
+    disallowed_url = 'registration_disallowed'
+    form_class = RegistrationForm
+    http_method_names = ['get', 'post', 'head', 'options', 'trace']
+    success_url = None
+    template_name = 'registration/registration_form.html'
+    
+    def dispatch(self, request, *args, **kwargs):
+        """
+        Check that user signup is allowed before even bothering to
+        dispatch or do other processing.
+                
+        """        
+        if not self.registration_allowed(request):
+            return redirect(self.disallowed_url)
+        return super(RegistrationView, self).dispatch(request, *args, **kwargs)
+    
+    def form_valid(self, request, form):
+        new_user = self.register(request, **form.cleaned_data)
+        success_url = self.get_success_url(request, new_user)
+        
+        # success_url may be a simple string, or a tuple providing the
+        # full argument set for redirect(). Attempting to unpack it
+        # tells us which one it is.        
+        try:
+            to, args, kwargs = success_url
+            return redirect(to, *args, **kwargs)
+        except ValueError:
+            return redirect(success_url)
+        
+    def registration_allowed(self, request):
+        """
+        Override this to enable/disable user registration, either
+        globally or on a per-request basis.
+        """   
+        return getattr(settings, 'REGISTRATION_OPEN', True)
+        
+    def register(self, request, **cleaned_data):
+        """
+        Implement user-registration logic here. Access to both the
+        request and the full cleaned_data of the registration form is
+        available here.        
+        """
+        user_args = {'password': cleaned_data['password1']}
+        
+        for field in USER_FORM_FIELDS:
+            if field in cleaned_data:
+                user_args[field] = cleaned_data[field]
+        
+        if Site._meta.installed:
+            site = Site.objects.get_current()
+        else:
+            site = RequestSite(request)
+        
+        new_user = RegistrationProfile.objects.create_inactive_user(user_args, 
+                                                                    site)
+        
+        user_registered.send(sender=self.__class__,
+                             user = new_user,
+                             request = request)
+        return new_user
+###        new_user = authenticate(**data)
+###        login(request, new_user)
+###        user_registered.send(sender=self.__class__,
+###                             user=new_user,
+###                             request=request)        
+    
+    def get_success_url(self, request, user):
+            return ('registration_complete', (), {})    
 
-        #check if the activation key has expired, if it has then render confirm/expired
-        if user_profile.key_expires < timezone.now():
-            return render_to_response('registration/activate.html', {'account':False})
 
-        # if the key hasn't expired save user and set him as active and render some template to
-        # confirm activation 
-        user = user_profile.user
-        user.is_active = True
-        user.save()
-        return render_to_response('registration/activation_complete.html', {'success':True})
-
+class ActivationView(TemplateView):
+    """
+    Base class for user activation views.
+    """    
+    http_method_names = ['get']
+    template_name1 = 'registration/activate.html'
+    
+    def get(self, request, *args, **kwargs):
+        activated_user = self.activate(request, *args, **kwargs)
+        if activated_user:
+            user_activated.send(sender=self.__class__,
+                                user=activated_user,
+                                request=request)
+            success_url = self.get_success_url(request, activated_user)
+            
+            try:
+                to, args, kwargs = success_url
+                return redirect(to, *args, **kwargs)
+            except ValueError:
+                return redirect(success_url)
+        return super(ActivationView, self).get(request, *args, **kwargs)
+    
+    def activate(self, request, activation_key):
+        activated_user = RegistrationProfile.objects.activate_user(activation_key)
+        if activated_user:
+            user_activated.send(sender=self.__class__,
+                                user=activated_user,
+                                request=request)
+        return activated_user
+    
+    
+    def get_success_url(self, request, user):
+        return ('registration_activation_complete', (), {})
