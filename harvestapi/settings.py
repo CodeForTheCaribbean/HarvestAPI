@@ -201,3 +201,13 @@ EMAIL_USE_TLS = True
 # https://warehouse.python.org/project/whitenoise/
 
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
+import sys
+if 'test' in sys.argv:
+        DATABASES = {'default': dj_database_url.config(default='postgres://hzlftoiyimauyh:aYDWYR5I1_XknlBmHzL6scoZJX@ec2-54-225-101-124.compute-1.amazonaws.com:5432/d52lm2lo4bpq53')}
+#if manage.py test was called, use test settings
+#if 'test' in sys.argv:
+#	try:
+#		from test_settings import *
+#	except ImportError:
+#		pass
