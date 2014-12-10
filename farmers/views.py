@@ -196,22 +196,21 @@ class PriceViewSet(viewsets.ModelViewSet):
     ordering_fields = ('commodity', 'crop_code', 'price_point', 'extension', 'parish')
 
 
-@api_view(['POST'])
-def register(request):
-    VALID_USER_FIELDS = [f.name for f in get_user_model()._meta.fields]
-    DEFAULTS = {
+#@api_view(['POST'])
+#def register(request):
+#    DEFAULTS = {
         # you can define any defaults that you would like for the user, here
-    }
-    serialized = UserSerializer(data=request.DATA)
-    if serialized.is_valid():
-        user_data = {field: data for (field, data) in request.DATA.items() if field in VALID_USER_FIELDS}
-        user_data.update(DEFAULTS)
-        user = get_user_model().objects.create_user(
-            **user_data
-        )
-        return Response(UserSerializer(instance=user).data, status=status.HTTP_201_CREATED)
-    else:
-        return Response(serialized._errors, status=status.HTTP_400_BAD_REQUEST)
+#    }
+#    serialized = UserSerializer(data=request.DATA)
+#    if serialized.is_valid():
+#        user_data = {field: data for (field, data) in request.DATA.items() if field in VALID_USER_FIELDS}
+#        user_data.update(DEFAULTS)
+#        user = get_user_model().objects.create_user(
+#            **user_data
+#        )
+#        return Response(UserSerializer(instance=user).data, status=status.HTTP_201_CREATED)
+#    else:
+#        return Response(serialized._errors, status=status.HTTP_400_BAD_REQUEST)
 
 @csrf_protect
 def register_here(request):

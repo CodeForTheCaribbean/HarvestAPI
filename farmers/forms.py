@@ -36,15 +36,6 @@ class RegistrationForm(forms.Form):
             return self.cleaned_data['username']
         raise forms.ValidationError(_("The username already exists. Please try another one."))
 
-##    def clean_email(self):
-##        email = self.cleaned_data['email']
-##        try:
-##            user = User.objects.get(email=email)
-##            raise forms.ValidationError("This email already exists. Did you forget your password?")
-##        except User.DoesNotExist:
-##            return email
-##        raise forms.ValidationError('Duplicate email')
-
     def save(self, commit=True):
         user = super(RegistrationForm, self).save(commit=False)
         user.set_password(self.cleaned_data["password1"])

@@ -194,8 +194,8 @@ except ImportError:
     pass
 
 EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_HOST_USER = 'app20072053@heroku.com'
-EMAIL_HOST_PASSWORD = 'rvqu8zlp'
+EMAIL_HOST_USER = 'badbruce07'
+EMAIL_HOST_PASSWORD = '?myBlahBlah1?'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
