@@ -212,26 +212,26 @@ class PriceViewSet(viewsets.ModelViewSet):
 #    else:
 #        return Response(serialized._errors, status=status.HTTP_400_BAD_REQUEST)
 
-@csrf_protect
-def register_here(request):
-    """ User sign up form """
-    if request.method == 'POST':
-        form = RegistrationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect('/user/register/complete')
+#@csrf_protect
+#def register_here(request):
+#    """ User sign up form """
+#    if request.method == 'POST':
+#        form = RegistrationForm(request.POST)
+#        if form.is_valid():
+#            form.save()
+#            return HttpResponseRedirect('/user/register/complete')
         
-    args={}
+#    args={}
             
     # builds the form securely
-    args.update(csrf(request))
+#    args.update(csrf(request))
         
-    args['form'] = RegistrationForm()
-    return render_to_response('registration/registration_form.html', args) 
+#    args['form'] = RegistrationForm()
+#    return render_to_response('registration/registration_form.html', args) 
 
 
-def register_success(request):
-    return render_to_response('registration/registration_complete.html')
+#def register_success(request):
+#    return render_to_response('registration/registration_complete.html')
 
 """
     Views which allows users to create and activate accounts.

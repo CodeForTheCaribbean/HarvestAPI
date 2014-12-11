@@ -194,8 +194,8 @@ except ImportError:
     pass
 
 EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_HOST_USER = 'badbruce07'
-EMAIL_HOST_PASSWORD = '?myBlahBlah1?'
+EMAIL_HOST_USER = 'sendgrid username'
+EMAIL_HOST_PASSWORD = 'sendgrid password'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
