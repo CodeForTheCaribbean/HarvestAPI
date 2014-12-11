@@ -1,10 +1,10 @@
 import django_filters
-from farmers.models import Farmer, Receipt, Farm, Crop, Livestock, Price
-from farmers.serializers import FarmerPrivateSerializer, FarmerSerializer, ReceiptSerializer, FarmSerializer, CropSerializer, LivestockSerializer, PriceSerializer
+from farmers.models import Farmer, Receipt, Farm, Crop, Livestock, Price, RegistrationManager, RegistrationProfile
+from farmers.serializers import FarmerSerializer, ReceiptSerializer, FarmSerializer, CropSerializer, LivestockSerializer, PriceSerializer
  
 from rest_framework import generics
 from rest_framework import permissions
-from django.contrib.auth.models import User
+from django.contrib.auth.models import *
 from farmers.serializers import UserSerializer
 from farmers.permissions import IsOwnerOrReadOnly
 from rest_framework.decorators import api_view
@@ -22,6 +22,34 @@ from rest_framework import status, serializers
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
+
+from django.contrib import messages
+from django.conf import settings
+#from farmers.templates.registration import *
+
+from django.views.decorators.csrf import csrf_protect
+from django.core.context_processors import csrf
+from django.shortcuts import render_to_response, get_object_or_404, render, RequestContext, redirect
+from django.http import HttpResponseRedirect, HttpResponse
+from django.template import *
+from django.core.mail import send_mail
+import hashlib, datetime, random
+from django.utils import timezone
+
+from django.views.generic.base import TemplateView
+from django.views.generic.edit import FormView
+
+from farmers.signals import *
+from farmers.forms import RegistrationForm
+
+from django.contrib.sites.models import RequestSite
+from django.contrib.sites.models import Site
+
+User = get_user_model()
+
+USER_MODEL_FIELD_NAMES = [field.name for field in User._meta.fields]
+USER_REQUIRED_FIELDS = set([User.USERNAME_FIELD] + list(User.REQUIRED_FIELDS))
+USER_FORM_FIELDS = getattr(settings, 'USER_FORM_FIELDS', USER_REQUIRED_FIELDS)
 
 
 class FarmerViewSet(viewsets.ModelViewSet):
@@ -189,5 +217,181 @@ def register(request):
     else:
         return Response(serialized._errors, status=status.HTTP_400_BAD_REQUEST)
 
+@csrf_protect
+def register_here(request):
+    """ User sign up form """
+    if request.method == 'POST':
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/user/register/complete')
+        
+    args={}
+            
+    # builds the form securely
+    args.update(csrf(request))
+        
+    args['form'] = RegistrationForm()
+    return render_to_response('registration/registration_form.html', args) 
 
 
+def register_success(request):
+    return render_to_response('registration/registration_complete.html')
+
+"""
+    Views which allows users to create and activate accounts.
+"""
+
+class _RequestPassingFormView(FormView):
+    """
+    A version of FormView which passes extra arguments to certain methods,
+    notably passing the HTTP request nearly everywhere, to enable
+    finer-grained processing.
+    """
+    def get(self, request, *args, **kwargs):
+        # Pass request to get_form_class and get_form for per-request
+        # form control
+        form_class = self.get_form_class(request)
+        form = self.get_form(form_class)
+        return self.render_to_response(self.get_context_data(form=form))
+    
+    def post(self, request, *args, **kwargs):
+        # Pass request to get_form_class and get_form for per-request
+        # form control.
+        form_class = self.get_form_class(request)
+        form = self.get_form(form_class)
+        
+        if form.is_valid():
+            # Pass request to form_valid.
+            return self.form_valid(request, form)
+        else:
+            return self.form_invalid(form)
+        
+    def get_form_class(self, request=None):
+        return super(_RequestPassingFormView, self).get_form_class()
+    
+    def get_form_kwargs(self, request=None, form_class=None):
+        return super(_RequestPassingFormView, self).get_form_kwargs()
+    
+    def get_initial(self, request=None):
+        return super(_RequestPassingFormView, self).get_initial()
+    
+    def get_success_url(self, request=None, user=None):
+        # We need to be able to use the request and the new user when
+        # constructing success_url.
+        return super(_RequestPassingFormView, self).get_success_url()
+    
+    def form_valid(self, form, request=None):
+        return super(_RequestPassingFormView, self).form_valid(form)
+    
+    def form_invalid(self, form, request=None):
+        return super(_RequestPassingFormView, self).form_invalid(form)    
+
+
+class RegistrationView(_RequestPassingFormView):
+    """
+        Base class for user registration views.
+    """
+    disallowed_url = 'registration_disallowed'
+    form_class = RegistrationForm
+    http_method_names = ['get', 'post', 'head', 'options', 'trace']
+    success_url = None
+    template_name = 'registration/registration_form.html'
+    
+    def dispatch(self, request, *args, **kwargs):
+        """
+        Check that user signup is allowed before even bothering to
+        dispatch or do other processing.
+                
+        """        
+        if not self.registration_allowed(request):
+            return redirect(self.disallowed_url)
+        return super(RegistrationView, self).dispatch(request, *args, **kwargs)
+    
+    def form_valid(self, request, form):
+        new_user = self.register(request, **form.cleaned_data)
+        success_url = self.get_success_url(request, new_user)
+        
+        # success_url may be a simple string, or a tuple providing the
+        # full argument set for redirect(). Attempting to unpack it
+        # tells us which one it is.        
+        try:
+            to, args, kwargs = success_url
+            return redirect(to, *args, **kwargs)
+        except ValueError:
+            return redirect(success_url)
+        
+    def registration_allowed(self, request):
+        """
+        Override this to enable/disable user registration, either
+        globally or on a per-request basis.
+        """   
+        return getattr(settings, 'REGISTRATION_OPEN', True)
+        
+    def register(self, request, **cleaned_data):
+        """
+        Implement user-registration logic here. Access to both the
+        request and the full cleaned_data of the registration form is
+        available here.        
+        """
+        user_args = {'password': cleaned_data['password1']}
+        
+        for field in USER_FORM_FIELDS:
+            if field in cleaned_data:
+                user_args[field] = cleaned_data[field]
+        
+        if Site._meta.installed:
+            site = Site.objects.get_current()
+        else:
+            site = RequestSite(request)
+        
+        new_user = RegistrationProfile.objects.create_inactive_user(user_args, 
+                                                                    site)
+        
+        user_registered.send(sender=self.__class__,
+                             user = new_user,
+                             request = request)
+        return new_user
+###        new_user = authenticate(**data)
+###        login(request, new_user)
+###        user_registered.send(sender=self.__class__,
+###                             user=new_user,
+###                             request=request)        
+    
+    def get_success_url(self, request, user):
+            return ('registration_complete', (), {})    
+
+
+class ActivationView(TemplateView):
+    """
+    Base class for user activation views.
+    """    
+    http_method_names = ['get']
+    template_name1 = 'registration/activate.html'
+    
+    def get(self, request, *args, **kwargs):
+        activated_user = self.activate(request, *args, **kwargs)
+        if activated_user:
+            user_activated.send(sender=self.__class__,
+                                user=activated_user,
+                                request=request)
+            success_url = self.get_success_url(request, activated_user)
+            
+            try:
+                to, args, kwargs = success_url
+                return redirect(to, *args, **kwargs)
+            except ValueError:
+                return redirect(success_url)
+        return super(ActivationView, self).get(request, *args, **kwargs)
+    
+    def activate(self, request, activation_key):
+        activated_user = RegistrationProfile.objects.activate_user(activation_key)
+        if activated_user:
+            user_activated.send(sender=self.__class__,
+                                user=activated_user,
+                                request=request)
+        return activated_user
+    
+    
+    def get_success_url(self, request, user):
+        return ('registration_activation_complete', (), {})
