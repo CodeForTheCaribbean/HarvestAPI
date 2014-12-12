@@ -6,6 +6,7 @@ from harvestapi import settings
 from django.contrib.auth.models import User
 from django.views.generic.base import TemplateView
 from farmers.views import RegistrationView, ActivationView
+from django.views.generic import RedirectView
 
 from django.contrib import admin
 admin.autodiscover()
@@ -24,6 +25,10 @@ router.register(r'prices', views.PriceViewSet)
 # Additionally, we include the login URLs for the browseable API.
 # Included docs URL to 'swagger' docs
 urlpatterns = patterns('',
+    url(r'^home/$',
+        RegistrationView.as_view(),
+        name='registration_register'),
+    url(r'^$', RedirectView.as_view(url='/home/')),
     url(r'^', include(router.urls)),
     url(r'^docs/', include('rest_framework_swagger.urls')),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
