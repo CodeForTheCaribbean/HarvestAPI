@@ -111,6 +111,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     'django_filters',
+    'widget_tweaks',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
@@ -194,8 +195,8 @@ except ImportError:
     pass
 
 EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_HOST_USER = 'sendgrid username'
-EMAIL_HOST_PASSWORD = 'sendgrid password'
+EMAIL_HOST_USER = 'badbruce07'
+EMAIL_HOST_PASSWORD = '?myBlahBlah1?'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 

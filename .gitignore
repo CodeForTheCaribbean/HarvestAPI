@@ -1,15 +1,16 @@
 #created by mergetool
 *.orig
 
+#vim swap file
+*.swp
+
 #don't put migrations in repo
 farmers/migrations/*
 
 #local settings file
-agriapi/local_settings.py
+harvestapi/local_settings.py
 
 #virtual environment
-agriapi/local_settings.py
-
 venv
 
 *.pyc
