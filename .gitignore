@@ -5,11 +5,9 @@
 farmers/migrations/*
 
 #local settings file
-agriapi/local_settings.py
+harvestapi/local_settings.py
 
 #virtual environment
-agriapi/local_settings.py
-
 venv
 
 *.pyc
