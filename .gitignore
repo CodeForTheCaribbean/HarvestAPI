@@ -6,6 +6,7 @@ farmers/migrations/*
 
 #local settings file
 harvestapi/local_settings.py
+harvestapi/settings.py
 
 #virtual environment
 venv
@@ -49,15 +50,3 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
-
-#notes
-notes.txt
-
-#data
-farmers/fixtures/initial_data.json
-farmers.json
-farmers_131205.data
-dumpddata-desktop.json
-farmers_131208.data
-farmers_131208.json
-agriapi/settings.py
