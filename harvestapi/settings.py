@@ -1,11 +1,17 @@
 # Django settings for harvestapi project.
 import os
+from ConfigParser import RawConfigParser
+
+config = RawConfigParser()
+# by default the parser will read from local_settings.ini
+
+config.read(os.path.join(os.path.dirname(__file__), '../config/local_settings.ini'))
 
 # Helper lambda for gracefully degrading environmental variables:
 env = lambda e, d: environ[e] if environ.has_key(e) else d
 
-DEBUG = True 
-TEMPLATE_DEBUG = DEBUG
+DEBUG = config.getboolean('debug', 'DEBUG')
+TEMPLATE_DEBUG = config.getboolean('debug', 'TEMPLATE_DEBUG')
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
@@ -18,39 +24,39 @@ MANAGERS = ADMINS
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ['.herokuapp.com']
+ALLOWED_HOSTS = config.get('application','ALLOWED_HOSTS')
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
 # In a Windows environment this must be set to your system time zone.
-TIME_ZONE = 'America/Chicago'
+TIME_ZONE = config.get('application','TIME_ZONE')
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = config.get('application', 'LANGUAGE_CODE')
 
-SITE_ID = 1
+SITE_ID = config.get('application', 'SITE_ID')
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
-USE_I18N = True
+USE_I18N = config.getboolean('application', 'USE_I18N')
 
 # If you set this to False, Django will not format dates, numbers and
 # calendars according to the current locale.
-USE_L10N = True
+USE_L10N = config.getboolean('application', 'USE_L10N')
 
 # If you set this to False, Django will not use timezone-aware datetimes.
-USE_TZ = True
+USE_TZ = config.getboolean('application', 'USE_TZ')
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
-MEDIA_ROOT = ''
+MEDIA_ROOT = config.get('application', 'MEDIA_ROOT')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://example.com/media/", "http://media.example.com/"
-MEDIA_URL = ''
+MEDIA_URL = config.get('application', 'MEDIA_URL')
 
 
 # List of finder classes that know how to find static files in
@@ -62,7 +68,7 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = 'u(dejr^k2v0ys0w093eoni(-_0y#e8b#yn!$d!7bt03oacnfk3'
+SECRET_KEY = config.get('secrets', 'SECRET_KEY')
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -81,10 +87,10 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'urls'
+ROOT_URLCONF = config.get('application', 'ROOT_URLCONF')
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'harvestapi.wsgi.application'
+WSGI_APPLICATION = config.get('application', 'WSGI_APPLICATION')
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -149,7 +155,10 @@ LOGGING = {
 #added for Heroku
 # Parse database configuration from $DATABASE_URL
 import dj_database_url
-DATABASES = {'default': dj_database_url.config(default='postgres://postgres@localhost/harvest_api')}
+dbconfig = 'postgres://' + config.get('database', 'DATABASE_USER') + \
+         '@' + config.get('database', 'DATABASE_HOST') +'/' + \
+         config.get('database', 'DATABASE_NAME')
+DATABASES = {'default': dj_database_url.config(default=dbconfig)}
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -183,7 +192,7 @@ REST_FRAMEWORK = {
     )
 }
 
-ACCOUNT_ACTIVATION_DAYS = 7 # One-week activation window; you may, of course, use a different value.
+ACCOUNT_ACTIVATION_DAYS = config.get('registration', 'ACCOUNT_ACTIVATION_DAYS')
 
 #local settings
 try:
@@ -191,13 +200,13 @@ try:
 except ImportError:
     pass
 
-EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_HOST_USER = 'app20072053@heroku.com'
-EMAIL_HOST_PASSWORD = 'rvqu8zlp'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+EMAIL_HOST = config.get('email', 'EMAIL_HOST')
+EMAIL_HOST_USER = config.get('email', 'EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config.get('email', 'EMAIL_HOST_PASSWORD')
+EMAIL_PORT = config.get('email', 'EMAIL_PORT')
+EMAIL_USE_TLS = config.getboolean('email', 'EMAIL_USE_TLS')
 
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
 
-STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+STATICFILES_STORAGE = config.get('application', 'STATICFILES_STORAGE')

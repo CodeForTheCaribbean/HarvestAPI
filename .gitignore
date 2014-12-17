@@ -50,3 +50,9 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
+
+#pycharm files
+.idea*
+
+#project local_config files
+local_settings.ini
