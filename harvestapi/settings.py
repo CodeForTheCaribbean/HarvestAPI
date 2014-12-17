@@ -4,7 +4,8 @@ from ConfigParser import RawConfigParser
 
 config = RawConfigParser()
 # by default the parser will read from local_settings.ini
-config.read('/Users/matjames007/Documents/slashroots/dev/HarvestAPI/config/local_settings.ini')
+
+config.read(os.path.join(os.path.dirname(__file__), '../config/local_settings.ini'))
 
 # Helper lambda for gracefully degrading environmental variables:
 env = lambda e, d: environ[e] if environ.has_key(e) else d
