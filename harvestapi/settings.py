@@ -112,6 +112,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django_filters',
     'widget_tweaks',
+    'password_policies',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
@@ -199,6 +200,7 @@ EMAIL_HOST_USER = 'badbruce07'
 EMAIL_HOST_PASSWORD = '?myBlahBlah1?'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
@@ -206,3 +208,5 @@ EMAIL_USE_TLS = True
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 DEFAULT_FROM_EMAIL = 'no-reply@slashroots.org'
+
+PASSWORD_RESET_TIMEOUT_DAYS = 3

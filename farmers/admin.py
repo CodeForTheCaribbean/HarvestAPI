@@ -7,4 +7,3 @@ admin.site.register(Price)
 admin.site.register(Livestock)
 admin.site.register(Farm)
 admin.site.register(Receipt)
-
