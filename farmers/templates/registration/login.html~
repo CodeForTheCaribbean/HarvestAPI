@@ -31,7 +31,7 @@
 				{% render_field form.password class+="form-control" placeholder="Password *"  %}
 				<br/>
 				
-				<p><a href="/user/password/reset/#signup">Forgot your password? </a> </p>
+				<p><a href="/user/password_reset/#signup">Forgot your password? </a> </p>
     			<p><a href="/user/register/#signup"> SignUp For HarvestAPI</a></p>
     		</div>
 		</div>

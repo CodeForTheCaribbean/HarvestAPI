@@ -177,7 +177,7 @@ class RegistrationManager(models.Manager):
                 user.save()
                 profile.activation_key = self.model.ACTIVATED
                 profile.save()
-                return user
+                return user              
             return False
         
     def create_inactive_user(self, user_args, site, send_email=True):
@@ -337,14 +337,12 @@ class RegistrationProfile(models.Model):
                     'expiration_days': settings.ACCOUNT_ACTIVATION_DAYS,
                     'site': site,
                     'user': self.user}
-        subject = render_to_string('registration/activation_email_subject.txt',
-                                   cxt_dict)
+        subject = render_to_string('registration/activation_email_subject.txt', ctx_dict)
         
         ### Email subject should not contain newlines
         subject = ''.join(subject.splitlines())
         
-        message_txt = render_to_string('registration/activation_email.txt',
-                                   cxt_dict)
+        message_txt = render_to_string('registration/activation_email.txt',ctx_dict)
         
         message_html = render_to_string('registration/activation_email.html',
                                                 ctx_dict)        
@@ -360,4 +358,4 @@ class RegistrationProfile(models.Model):
             message_html,
             'text/html'
         )
-        message.send()
+        message.send()   

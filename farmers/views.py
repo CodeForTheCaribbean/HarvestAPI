@@ -25,14 +25,12 @@ from rest_framework.authtoken.models import Token
 
 from django.contrib import messages
 from django.conf import settings
-#from farmers.templates.registration import *
 
 from django.views.decorators.csrf import csrf_protect
 from django.core.context_processors import csrf
 from django.shortcuts import render_to_response, get_object_or_404, render, RequestContext, redirect
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template import *
-from django.core.mail import send_mail
 import hashlib, datetime, random
 from django.utils import timezone
 
@@ -40,10 +38,17 @@ from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
 
 from farmers.signals import *
-from farmers.forms import RegistrationForm
+from farmers.forms import RegistrationForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm
 
 from django.contrib.sites.models import RequestSite
 from django.contrib.sites.models import Site
+from django.contrib.auth.views import password_reset, password_reset_confirm
+from django.template.loader import render_to_string
+from django.core.mail import EmailMultiAlternatives
+from django.core import signing
+from django.utils.http import base36_to_int
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import never_cache
 
 User = get_user_model()
 
@@ -390,3 +395,55 @@ class ActivationView(TemplateView):
     
     def get_success_url(self, request, user):
         return ('registration_activation_complete', (), {})
+    
+"""
+Views that will allow a user to renew his password
+"""    
+    
+class PasswordResetFormView(TemplateView):
+    """
+    Base class for password reset form views
+    """
+    form_class = PasswordResetForm
+    template = 'registration/password_reset_form.html'
+    email_template = 'registration/password_reset_email.html'
+    subject_template = 'registration/password_reset_subject.txt'
+    message_template = 'registration/password_reset_email.txt'
+    
+    def password_reset(self, request, **cleaned_data):
+        ctx_dict = {'site': site,}
+        subject = render_to_string(subject_template, ctx_dict)
+        
+        ### Email subject should not contain newlines
+        subject = ''.join(subject.splitlines())        
+        
+        message_txt = render_to_string(message_template, ctx_dict)
+        
+        message_html = render_to_string(email_template, ctx_dict)
+        
+        message = EmailMultiAlternatives(
+            subject,
+            message_txt,
+            settings.DEFAULT_FROM_EMAIL,
+            (self.user.email,PasswordResetConfirmView.self.signature,)
+        )            
+        
+        message.attach_alternative(
+            message_html,
+            'text/html'
+        )
+        message.send() 
+        
+    def get_success_url(self, request, user):
+        return ('password_reset_done', (), {})    
+    
+    
+class PasswordResetConfirmView(TemplateView):
+    """
+    The base class used for password activation request
+    """
+    template_name = 'registration/password_reset_confirm.html'
+    form_class = SetPasswordForm
+    success_url = None
+    
+    

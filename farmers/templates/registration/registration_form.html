@@ -23,27 +23,27 @@
       		{% if form.username.errors %}
         			<p class="errors">{{ form.username.errors.as_text }}</p>
       		{% endif %}
-{% render_field form.username class+="form-control" placeholder="Username *"  %}
+				{% render_field form.username class+="form-control" placeholder="Username *"  %}
 				<br />
 
       		{% if form.email.errors %}
         			<p class="errors">{{ form.email.errors.as_text }}</p>
       		{% endif %}
-		{% render_field form.email class+="form-control" placeholder="Email Address *"  %}
+				{% render_field form.email class+="form-control" placeholder="Email Address *"  %}
     			<br />
       	
 
-      		{% if form.password1.errors %}
-        			<p class="errors">{{ form.password1.errors.as_text }}</p>
+      		{% if form.password.errors %}
+        			<p class="errors">{{ form.password.errors.as_text }}</p>
       		{% endif %}
-		{% render_field form.password1 class+="form-control" placeholder="Password *"  %}
+				{% render_field form.password1 class+="form-control" placeholder="Password *"  %}
     			<br />
 
 
       		{% if form.password2.errors %}
         			<p class="errors">{{ form.password2.errors.as_text }}</p>
       		{% endif %}
-		{% render_field form.password2 class+="form-control" placeholder="Repeat Password *"  %}
+				{% render_field form.password2 class+="form-control" placeholder="Repeat Password *"  %}
       			
     		</div>
     			

@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 #from django.contrib.auth.forms import UserCreationForm
 from django.core import validators
 from django.utils.translation import ugettext_lazy as _
+from django.conf import settings
 
 class RegistrationForm(forms.Form):
     username = forms.CharField(
@@ -50,6 +51,7 @@ class RegistrationForm(forms.Form):
             if self.cleaned_data['password1'] != self.cleaned_data['password2']:
                 raise forms.ValidationError(_("The two password fields did not match."))
         return self.cleaned_data
+
 
 
 class RegistrationFormTermsOfService(RegistrationForm):
@@ -102,3 +104,92 @@ class RegistrationFormNoFreeEmail(RegistrationForm):
         if email_domain in self.bad_domains:
             raise forms.ValidationError(_("Registration using free email addresses is prohibited. Please supply a different email address."))
         return self.cleaned_data['email']
+    
+
+class PasswordChangeForm(forms.Form):
+    """
+    A form that lets a user change their password by entering their old
+    password.
+    """    
+    old_password= forms.CharField(
+                    widget = forms.PasswordInput
+                    (attrs = {'class': "form-control",
+                              'placeholder': 'Old Password *'}))    
+
+    new_password1= forms.CharField(
+                widget = forms.PasswordInput
+                (attrs = {'class': "form-control",
+                          'placeholder': 'New Password *'}))
+    
+    new_password2= forms.CharField(
+                    widget = forms.PasswordInput
+                    (attrs = {'class': "form-control",
+                              'placeholder': 'Repeat New Password *'}))
+    
+    class Meta:
+        model = User
+        fields = ("old_password","new_password1","new_password2")
+    
+    
+    def clean(self):
+        password1 = self.cleaned_data.get('new_password1','')
+        password2 = self.cleaned_data('new_password2')
+        if not password1 == password2:
+            raise forms.ValidationError(_('The new passwords must be the same'))
+        return self.cleaned_data
+    
+    
+class PasswordResetForm(forms.Form):
+    
+    email = forms.EmailField(
+                widget = forms.TextInput
+                        (attrs = {'class': "form-control",
+                                  'placeholder': 'Email *'}))    
+
+    error_messages = {'unknown': ("That email address doesn't have an associated "
+                                  "user account. Are you sure you've registered?"),
+                      'unusable': ("The user account associated with this email "
+                                   "address cannot reset the password."),}
+    
+    class Meta:
+        model = User
+        fields = ("email")
+        
+    def clean_email(self):
+        """
+        Validates that an active user exists with the given email address.
+        """
+        UserModel = get_user_model()
+        user_email = self.cleaned_data["email"]
+        
+        
+        
+class SetPasswordForm(forms.Form):
+    
+    new_password1= forms.CharField(
+                    widget = forms.PasswordInput
+                    (attrs = {'class': "form-control",
+                              'placeholder': 'New Password *'}))
+        
+    new_password2= forms.CharField(
+                    widget = forms.PasswordInput
+                    (attrs = {'class': "form-control",
+                              'placeholder': 'Repeat New Password *'})) 
+    
+    def clean_new_password2(self):
+        password1 = self.cleaned_data.get('new_password1')
+        password2 = self.cleaned_data.get('new_password2')
+        
+        if password1 and password2:
+            if password1 != password2:
+                raise forms.ValidationError(
+                    self.error_messages['password_mismatch'],
+                    code='password_mismatch',
+                )
+        return password2 
+    
+    def save(self, commit=True):
+        self.user.set_password(self.cleaned_data['new_password1'])
+        if commit:
+            self.user.save()
+        return self.user   

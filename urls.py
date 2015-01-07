@@ -6,6 +6,8 @@ from harvestapi import settings
 from django.contrib.auth.models import User
 from django.views.generic.base import TemplateView
 from farmers.views import RegistrationView, ActivationView
+from farmers.views import PasswordResetConfirmView
+from farmers.views import PasswordResetFormView
 from django.views.generic import RedirectView
 
 from django.contrib import admin
@@ -29,7 +31,7 @@ urlpatterns = patterns('',
         RegistrationView.as_view(),
         name='registration_register'),
     url(r'^$', RedirectView.as_view(url='/home/')),
-    url(r'^', include(router.urls)),
+    url(r'^data/', include(router.urls)),
     url(r'^docs/', include('rest_framework_swagger.urls')),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     #url(r'^users/register', 'farmers.views.register'),
@@ -44,8 +46,6 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
-    #url(r'^user/register_here', 'farmers.views.register_here'),
-    #url(r'^user/register_complete', 'farmers.views.register_success'),
     
     url(r'^user/activate/complete/$',
         TemplateView.as_view(template_name='registration/activation_complete.html'),
@@ -63,14 +63,29 @@ urlpatterns = patterns('',
         RegistrationView.as_view(),
         name='registration_register'),
     
-    url(r'^user/register/complete/$',
+    url(r'^user/register/complete/#signup$',
         TemplateView.as_view(template_name='registration/registration_complete.html'),
         name='registration_complete'),
     
     url(r'^register/closed/$',
         TemplateView.as_view(template_name='registration/registration_closed.html'),
         name='registration_disallowed'),
-    #(r'', include('opps.registration.auth_urls')),    
+    
+    url(r'^user/password/reset/$',
+        PasswordResetFormView.as_view(),
+        name='password_reset'),
+    
+    url(r'^user/password/reset/done/$',
+            TemplateView.as_view(template_name='registration/password_reset_done.html'),
+            name='password_reset_done'),    
+    
+    url(r'^user/password/reset/confirm/([0-9A-Za-z]{1,13})/([0-9A-Za-z]{1,13})/([0-9A-Za-z-=_]{1,32})/$',
+        PasswordResetConfirmView.as_view(),
+        name='password_reset_confirm'),   
+    
+    url(r'^user/password/reset/complete/$',
+        TemplateView.as_view(template_name='registration/password_reset_complete.html'),
+        name='password_reset_complete'),    
 )
 
 urlpatterns += patterns('',  
