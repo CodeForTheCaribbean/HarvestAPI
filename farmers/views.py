@@ -1,6 +1,7 @@
 import django_filters
 from farmers.models import Farmer, Receipt, Farm, Crop, Livestock, Price, RegistrationManager, RegistrationProfile
 from farmers.serializers import FarmerSerializer, ReceiptSerializer, FarmSerializer, CropSerializer, LivestockSerializer, PriceSerializer
+from password_policies.models import *
  
 from rest_framework import generics
 from rest_framework import permissions

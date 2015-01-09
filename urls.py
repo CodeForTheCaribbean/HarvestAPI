@@ -9,6 +9,8 @@ from farmers.views import RegistrationView, ActivationView
 from farmers.views import PasswordResetConfirmView
 from farmers.views import PasswordResetFormView
 from django.views.generic import RedirectView
+from password_policies.views import *
+from password_policies.urls import *
 
 from django.contrib import admin
 admin.autodiscover()
@@ -36,6 +38,7 @@ urlpatterns = patterns('',
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     #url(r'^users/register', 'farmers.views.register'),
     url(r'^user/', include('registration.backends.default.urls')),
+    url(r'^password/', include('password_policies.urls')),
     #url(r'^signup/', include('farmers.views.registration')),
     url(r'^get-key/', 'rest_framework.authtoken.views.obtain_auth_token'),
     # url(r'^$', '{{ project_name }}.views.home', name='home'),
@@ -69,23 +72,7 @@ urlpatterns = patterns('',
     
     url(r'^register/closed/$',
         TemplateView.as_view(template_name='registration/registration_closed.html'),
-        name='registration_disallowed'),
-    
-    url(r'^user/password/reset/$',
-        PasswordResetFormView.as_view(),
-        name='password_reset'),
-    
-    url(r'^user/password/reset/done/$',
-            TemplateView.as_view(template_name='registration/password_reset_done.html'),
-            name='password_reset_done'),    
-    
-    url(r'^user/password/reset/confirm/([0-9A-Za-z]{1,13})/([0-9A-Za-z]{1,13})/([0-9A-Za-z-=_]{1,32})/$',
-        PasswordResetConfirmView.as_view(),
-        name='password_reset_confirm'),   
-    
-    url(r'^user/password/reset/complete/$',
-        TemplateView.as_view(template_name='registration/password_reset_complete.html'),
-        name='password_reset_complete'),    
+        name='registration_disallowed'),   
 )
 
 urlpatterns += patterns('',  
