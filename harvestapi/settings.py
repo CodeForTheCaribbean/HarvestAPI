@@ -77,7 +77,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    #'password_policies.middleware.PasswordChangeMiddleware',
+    'password_policies.middleware.PasswordChangeMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -120,7 +120,7 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
 )
 
-SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
+SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

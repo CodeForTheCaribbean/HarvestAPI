@@ -1,7 +1,6 @@
 import django_filters
 from farmers.models import Farmer, Receipt, Farm, Crop, Livestock, Price, RegistrationManager, RegistrationProfile
 from farmers.serializers import FarmerSerializer, ReceiptSerializer, FarmSerializer, CropSerializer, LivestockSerializer, PriceSerializer
-from password_policies.models import *
  
 from rest_framework import generics
 from rest_framework import permissions
@@ -50,6 +49,11 @@ from django.core import signing
 from django.utils.http import base36_to_int
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
+
+from password_policies.views import *
+from password_policies.forms import *
+from password_policies.conf import settings
+from password_policies.models import *
 
 User = get_user_model()
 
@@ -400,11 +404,11 @@ class ActivationView(TemplateView):
 """
 Views that will allow a user to renew his password
 """    
-    
+"""
 class PasswordResetFormView(TemplateView):
-    """
+    
     Base class for password reset form views
-    """
+    
     form_class = PasswordResetForm
     template = 'registration/password_reset_form.html'
     email_template = 'registration/password_reset_email.html'
@@ -437,14 +441,13 @@ class PasswordResetFormView(TemplateView):
         
     def get_success_url(self, request, user):
         return ('password_reset_done', (), {})    
-    
-    
+"""   
+"""   
 class PasswordResetConfirmView(TemplateView):
-    """
+   
     The base class used for password activation request
-    """
+    
     template_name = 'registration/password_reset_confirm.html'
     form_class = SetPasswordForm
     success_url = None
-    
-    
+"""   

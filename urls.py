@@ -6,10 +6,7 @@ from harvestapi import settings
 from django.contrib.auth.models import User
 from django.views.generic.base import TemplateView
 from farmers.views import RegistrationView, ActivationView
-from farmers.views import PasswordResetConfirmView
-from farmers.views import PasswordResetFormView
 from django.views.generic import RedirectView
-from password_policies.views import *
 from password_policies.urls import *
 
 from django.contrib import admin
