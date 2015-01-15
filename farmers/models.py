@@ -1,25 +1,18 @@
-import datetime
-import hashlib
-import random
-import re
-
-from django.db import models
-from rest_framework.authtoken.models import Token
-
-from django.contrib.auth import get_user_model
-from django.db.models.signals import post_save
-from django.dispatch import receiver
-from rest_framework.authtoken.models import Token
-from django.contrib.auth.models import User
-from django.utils import timezone
+import datetime, hashlib, random, re
 
 from django.conf import settings
-from django.db import transaction
-from django.template.loader import render_to_string
-from django.utils.translation import ugettext_lazy as _
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
 from django.core.mail import EmailMultiAlternatives
-
+from django.db import models, transaction
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.template.loader import render_to_string
+from django.utils import timezone
 from django.utils import *
+from django.utils.translation import ugettext_lazy as _
+
+from rest_framework.authtoken.models import Token
 
 User = get_user_model()
 
@@ -178,7 +171,7 @@ class RegistrationManager(models.Manager):
                 profile.activation_key = self.model.ACTIVATED
                 profile.save()
                 return user              
-            return False
+        return False
         
     def create_inactive_user(self, user_args, site, send_email=True):
         """

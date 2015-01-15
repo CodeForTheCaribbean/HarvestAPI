@@ -1,16 +1,18 @@
 from django.conf.urls import patterns, url, include
-from farmers import views
-#from farmers import templates
-from rest_framework.routers import DefaultRouter
-from harvestapi import settings
+from django.contrib import admin
 from django.contrib.auth.models import User
-from django.views.generic.base import TemplateView
-from farmers.views import RegistrationView, ActivationView
 from django.views.generic import RedirectView
+from django.views.generic.base import TemplateView
+admin.autodiscover()
+
+from farmers import views
+from farmers.views import RegistrationView, ActivationView
+
+from harvestapi import settings
+
 from password_policies.urls import *
 
-from django.contrib import admin
-admin.autodiscover()
+from rest_framework.routers import DefaultRouter
 
 # Create a router and register our viewsets with it.
 router = DefaultRouter()
@@ -33,11 +35,11 @@ urlpatterns = patterns('',
     url(r'^data/', include(router.urls)),
     url(r'^docs/', include('rest_framework_swagger.urls')),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    #url(r'^users/register', 'farmers.views.register'),
     url(r'^user/', include('registration.backends.default.urls')),
     url(r'^password/', include('password_policies.urls')),
     #url(r'^signup/', include('farmers.views.registration')),
     url(r'^get-key/', 'rest_framework.authtoken.views.obtain_auth_token'),
+    url(r'^api-auth/logout/?next=home/$', 'logout', name='logout'),
     # url(r'^$', '{{ project_name }}.views.home', name='home'),
     # url(r'^{{ project_name }}/', include('{{ project_name }}.foo.urls')),
 

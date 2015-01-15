@@ -1,6 +1,5 @@
 from django import forms
 from django.contrib.auth.models import User
-#from django.contrib.auth.forms import UserCreationForm
 from django.core import validators
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
@@ -51,94 +50,7 @@ class RegistrationForm(forms.Form):
             if self.cleaned_data['password1'] != self.cleaned_data['password2']:
                 raise forms.ValidationError(_("The two password fields did not match."))
         return self.cleaned_data
-
-
-
-class RegistrationFormTermsOfService(RegistrationForm):
-    """
-    Subclass of ``RegistrationForm`` which adds a required checkbox
-    for agreeing to a site's Terms of Service.
-    
-    """
-    tos = forms.BooleanField(widget=forms.CheckboxInput,
-                             label=_(u'I have read and agree to the Terms of Service'),
-                             error_messages={'required': _("You must agree to the terms to register")})
-
-class RegistrationFormUniqueEmail(RegistrationForm):
-    """
-    Subclass of ``RegistrationForm`` which enforces uniqueness of
-    email addresses.
-    
-    """
-    def clean_self(self):
-        """
-        Validate that the supplied email address is unique for the site
-        """
-        if User.objects.filter(email__iexact=self.cleaned_data['email']):
-            raise forms.ValidationError(_("This email address is already in use. Please supply a different email address."))
-        return self.cleaned_data['email']
-
-class RegistrationFormNoFreeEmail(RegistrationForm):
-    """
-    Subclass of ``RegistrationForm`` which disallows registration with
-    email addresses from popular free webmail services; moderately
-    useful for preventing automated spam registrations.
-    
-    To change the list of banned domains, subclass this form and
-    override the attribute ``bad_domains``.
-    
-    """
-
-    bad_domains = ['aim.com', 'aol.com', 'email.com', 'gmail.com',
-                   'googlemail.com', 'hotmail.com', 'hushmail.com',
-                   'msn.com', 'mail.ru', 'mailinator.com', 'live.com',
-                   'yahoo.com']
-
-    def clean_email(self):
-        """
-        Check the supplied email address against a list of known free
-        webmail domains.
-        
-        """
-        email_domain = self.cleaned_data['email'].split('@')[1]
-        if email_domain in self.bad_domains:
-            raise forms.ValidationError(_("Registration using free email addresses is prohibited. Please supply a different email address."))
-        return self.cleaned_data['email']
-    
-
-class PasswordChangeForm(forms.Form):
-    """
-    A form that lets a user change their password by entering their old
-    password.
-    """    
-    old_password= forms.CharField(
-                    widget = forms.PasswordInput
-                    (attrs = {'class': "form-control",
-                              'placeholder': 'Old Password *'}))    
-
-    new_password1= forms.CharField(
-                widget = forms.PasswordInput
-                (attrs = {'class': "form-control",
-                          'placeholder': 'New Password *'}))
-    
-    new_password2= forms.CharField(
-                    widget = forms.PasswordInput
-                    (attrs = {'class': "form-control",
-                              'placeholder': 'Repeat New Password *'}))
-    
-    class Meta:
-        model = User
-        fields = ("old_password","new_password1","new_password2")
-    
-    
-    def clean(self):
-        password1 = self.cleaned_data.get('new_password1','')
-        password2 = self.cleaned_data('new_password2')
-        if not password1 == password2:
-            raise forms.ValidationError(_('The new passwords must be the same'))
-        return self.cleaned_data
-    
-    
+   
 class PasswordResetForm(forms.Form):
     
     email = forms.EmailField(
@@ -161,7 +73,6 @@ class PasswordResetForm(forms.Form):
         """
         UserModel = get_user_model()
         user_email = self.cleaned_data["email"]
-        
         
         
 class SetPasswordForm(forms.Form):
