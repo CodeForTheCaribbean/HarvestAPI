@@ -356,12 +356,7 @@ class RegistrationView(_RequestPassingFormView):
         user_registered.send(sender=self.__class__,
                              user = new_user,
                              request = request)
-        return new_user
-###        new_user = authenticate(**data)
-###        login(request, new_user)
-###        user_registered.send(sender=self.__class__,
-###                             user=new_user,
-###                             request=request)        
+        return new_user     
     
     def get_success_url(self, request, user):
             return ('registration_complete', (), {})    
@@ -400,54 +395,3 @@ class ActivationView(TemplateView):
     
     def get_success_url(self, request, user):
         return ('registration_activation_complete', (), {})
-    
-"""
-Views that will allow a user to renew his password
-"""    
-"""
-class PasswordResetFormView(TemplateView):
-    
-    Base class for password reset form views
-    
-    form_class = PasswordResetForm
-    template = 'registration/password_reset_form.html'
-    email_template = 'registration/password_reset_email.html'
-    subject_template = 'registration/password_reset_subject.txt'
-    message_template = 'registration/password_reset_email.txt'
-    
-    def password_reset(self, request, **cleaned_data):
-        ctx_dict = {'site': site,}
-        subject = render_to_string(subject_template, ctx_dict)
-        
-        ### Email subject should not contain newlines
-        subject = ''.join(subject.splitlines())        
-        
-        message_txt = render_to_string(message_template, ctx_dict)
-        
-        message_html = render_to_string(email_template, ctx_dict)
-        
-        message = EmailMultiAlternatives(
-            subject,
-            message_txt,
-            settings.DEFAULT_FROM_EMAIL,
-            (self.user.email,PasswordResetConfirmView.self.signature,)
-        )            
-        
-        message.attach_alternative(
-            message_html,
-            'text/html'
-        )
-        message.send() 
-        
-    def get_success_url(self, request, user):
-        return ('password_reset_done', (), {})    
-"""   
-"""   
-class PasswordResetConfirmView(TemplateView):
-   
-    The base class used for password activation request
-    
-    template_name = 'registration/password_reset_confirm.html'
-    form_class = SetPasswordForm
-    success_url = None
-"""   
