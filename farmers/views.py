@@ -1,6 +1,6 @@
 import django_filters
 from farmers.models import Farmer, Receipt, Farm, Crop, Livestock, Price
-from farmers.serializers import FarmerSerializer, ReceiptSerializer, FarmSerializer, CropSerializer, LivestockSerializer, PriceSerializer
+from farmers.serializers import FarmerPrivateSerializer, FarmerSerializer, ReceiptSerializer, FarmSerializer, CropSerializer, LivestockSerializer, PriceSerializer
  
 from rest_framework import generics
 from rest_framework import permissions
@@ -28,11 +28,15 @@ class FarmerViewSet(viewsets.ModelViewSet):
     """
     This view set automatically provides `list`, `create`, `retrieve`,
     `update` and `destroy` Farmers.
-
     """
+    def get_serializer_class(self):
+        if self.request.user.is_staff:
+            return FarmerSerializer
+        return FarmerPrivateSerializer
+
     authentication_classes = (BasicAuthentication, SessionAuthentication, TokenAuthentication)
     queryset = Farmer.objects.all()
-    serializer_class = FarmerSerializer
+    serializer_class = FarmerPrivateSerializer
     permission_classes = (IsAuthenticated,)#(permissions.IsAuthenticatedOrReadOnly,
                          # IsOwnerOrReadOnly,)
     filter_fields = ('farmer_idx','farmer_id','first_name','last_name','alias','res_address', 'res_parish','tel_number','cell_number','verified_status','dob','agri_activity')
