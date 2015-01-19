@@ -9,7 +9,7 @@
     	<meta name="viewport" content="width=device-width">
     	<meta name="description" content="">
     	<link rel="canonical" href="https://badbruce07.github.io/">
-    	<script src="/static/registration/js/main.js"> </script>
+    	<script src=".../harvestapi/static/registration/js/main.js"> </script>
     	<style>
       	input.required, .errors {
         		border: 2px solid red;

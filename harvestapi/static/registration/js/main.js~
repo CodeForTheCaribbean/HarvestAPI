@@ -1,0 +1,4 @@
+function goto_anchor()
+{
+	window.location.href= "#signup";
+}
