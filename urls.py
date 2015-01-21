@@ -1,8 +1,11 @@
 from django.conf.urls import patterns, url, include
 from farmers import views
+#from farmers import templates
 from rest_framework.routers import DefaultRouter
 from harvestapi import settings
 from django.contrib.auth.models import User
+from django.views.generic.base import TemplateView
+from farmers.views import RegistrationView, ActivationView
 
 from django.contrib import admin
 admin.autodiscover()
@@ -26,6 +29,7 @@ urlpatterns = patterns('',
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^users/register', 'farmers.views.register'),
     url(r'^user/', include('registration.backends.default.urls')),
+    #url(r'^signup/', include('farmers.views.registration')),
     url(r'^get-key/', 'rest_framework.authtoken.views.obtain_auth_token'),
     # url(r'^$', '{{ project_name }}.views.home', name='home'),
     # url(r'^{{ project_name }}/', include('{{ project_name }}.foo.urls')),
@@ -35,7 +39,33 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
-
+    #url(r'^user/register_here', 'farmers.views.register_here'),
+    #url(r'^user/register_complete', 'farmers.views.register_success'),
+    
+    url(r'^user/activate/complete/$',
+        TemplateView.as_view(template_name='registration/activation_complete.html'),
+        name='registration_activation_complete'),
+    
+    # Activation keys get matched by \w+ instead of the more specific
+    # [a-fA-F0-9]{40} because a bad activation key should still get to the view;
+    # that way it can return a sensible "invalid key" message instead of a
+    # confusing 404.    
+    url(r'^user/activate/(?P<activation_key>\w+)/$',
+        ActivationView.as_view(),
+        name='registration_active'),
+    
+    url(r'^user/register/$',
+        RegistrationView.as_view(),
+        name='registration_register'),
+    
+    url(r'^user/register/complete/$',
+        TemplateView.as_view(template_name='registration/registration_complete.html'),
+        name='registration_complete'),
+    
+    url(r'^register/closed/$',
+        TemplateView.as_view(template_name='registration/registration_closed.html'),
+        name='registration_disallowed'),
+    #(r'', include('opps.registration.auth_urls')),    
 )
 
 urlpatterns += patterns('',  
