@@ -5,6 +5,7 @@ import os
 env = lambda e, d: environ[e] if environ.has_key(e) else d
 
 DEBUG = True 
+
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
