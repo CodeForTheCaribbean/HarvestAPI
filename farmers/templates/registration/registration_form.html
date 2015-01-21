@@ -6,6 +6,9 @@
 {% block content %}
 
 {% if form.errors %}
+	<script type="text/javascript" >
+		goto_anchor("#signup");
+	</script>
 	<p class="errors">Please correct the errors below: {{ form.non_field_errors }}</p>
 {% endif %}
 

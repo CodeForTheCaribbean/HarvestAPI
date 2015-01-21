@@ -1,59 +1,33 @@
-import django_filters
-from farmers.models import Farmer, Receipt, Farm, Crop, Livestock, Price, RegistrationManager, RegistrationProfile
-from farmers.serializers import FarmerSerializer, ReceiptSerializer, FarmSerializer, CropSerializer, LivestockSerializer, PriceSerializer
- 
-from rest_framework import generics
-from rest_framework import permissions
-from django.contrib.auth.models import *
-from farmers.serializers import UserSerializer
-from farmers.permissions import IsOwnerOrReadOnly
-from rest_framework.decorators import api_view
-from rest_framework.reverse import reverse
-from rest_framework import renderers
-from rest_framework.response import Response
-from rest_framework import viewsets
-from rest_framework import filters
-from rest_framework.decorators import link
+import django_filters, hashlib, datetime, random
 
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from rest_framework.authentication import SessionAuthentication, TokenAuthentication, BasicAuthentication
-from django.contrib.auth import get_user_model
-from rest_framework import status, serializers
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from rest_framework.authtoken.models import Token
-
-from django.contrib import messages
 from django.conf import settings
-
-from django.views.decorators.csrf import csrf_protect
 from django.core.context_processors import csrf
-from django.shortcuts import render_to_response, get_object_or_404, render, RequestContext, redirect
-from django.http import HttpResponseRedirect, HttpResponse
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import *
+from django.contrib.auth.views import password_reset, password_reset_confirm
+from django.contrib import messages
+from django.contrib.sites.models import RequestSite, Site
+from django.shortcuts import render_to_response, render, redirect
 from django.template import *
-import hashlib, datetime, random
+from django.template.loader import render_to_string
 from django.utils import timezone
-
+from django.views.decorators.csrf import csrf_protect
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
 
+from farmers.forms import RegistrationForm, PasswordResetForm, SetPasswordForm
+from farmers.models import Farmer, Receipt, Farm, Crop, Livestock, Price, RegistrationManager, RegistrationProfile
+from farmers.permissions import IsOwnerOrReadOnly
+from farmers.serializers import FarmerSerializer, ReceiptSerializer, FarmSerializer, CropSerializer, LivestockSerializer, PriceSerializer, UserSerializer
 from farmers.signals import *
-from farmers.forms import RegistrationForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm
 
-from django.contrib.sites.models import RequestSite
-from django.contrib.sites.models import Site
-from django.contrib.auth.views import password_reset, password_reset_confirm
-from django.template.loader import render_to_string
-from django.core.mail import EmailMultiAlternatives
-from django.core import signing
-from django.utils.http import base36_to_int
-from django.utils.decorators import method_decorator
-from django.views.decorators.cache import never_cache
-
-from password_policies.views import *
-from password_policies.forms import *
-from password_policies.conf import settings
-from password_policies.models import *
+from rest_framework import filters, generics, permissions, renderers, serializers, status, viewsets   
+from rest_framework.authentication import BasicAuthentication, SessionAuthentication, TokenAuthentication 
+from rest_framework.authtoken.models import Token
+from rest_framework.decorators import api_view, link
+from rest_framework.permissions import IsAdminUser, IsAuthenticated 
+from rest_framework.response import Response
+from rest_framework.reverse import reverse
 
 User = get_user_model()
 
@@ -206,45 +180,8 @@ class PriceViewSet(viewsets.ModelViewSet):
     ordering_fields = ('commodity', 'crop_code', 'price_point', 'extension', 'parish')
 
 
-#@api_view(['POST'])
-#def register(request):
-#    DEFAULTS = {
-        # you can define any defaults that you would like for the user, here
-#    }
-#    serialized = UserSerializer(data=request.DATA)
-#    if serialized.is_valid():
-#        user_data = {field: data for (field, data) in request.DATA.items() if field in VALID_USER_FIELDS}
-#        user_data.update(DEFAULTS)
-#        user = get_user_model().objects.create_user(
-#            **user_data
-#        )
-#        return Response(UserSerializer(instance=user).data, status=status.HTTP_201_CREATED)
-#    else:
-#        return Response(serialized._errors, status=status.HTTP_400_BAD_REQUEST)
-
-#@csrf_protect
-#def register_here(request):
-#    """ User sign up form """
-#    if request.method == 'POST':
-#        form = RegistrationForm(request.POST)
-#        if form.is_valid():
-#            form.save()
-#            return HttpResponseRedirect('/user/register/complete')
-        
-#    args={}
-            
-    # builds the form securely
-#    args.update(csrf(request))
-        
-#    args['form'] = RegistrationForm()
-#    return render_to_response('registration/registration_form.html', args) 
-
-
-#def register_success(request):
-#    return render_to_response('registration/registration_complete.html')
-
 """
-    Views which allows users to create and activate accounts.
+Views which allows users to create and activate accounts.
 """
 
 class _RequestPassingFormView(FormView):
@@ -391,7 +328,6 @@ class ActivationView(TemplateView):
                                 user=activated_user,
                                 request=request)
         return activated_user
-    
-    
+       
     def get_success_url(self, request, user):
         return ('registration_activation_complete', (), {})

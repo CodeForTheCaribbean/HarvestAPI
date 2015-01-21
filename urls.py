@@ -1,16 +1,18 @@
 from django.conf.urls import patterns, url, include
-from farmers import views
-#from farmers import templates
-from rest_framework.routers import DefaultRouter
-from harvestapi import settings
+from django.contrib import admin
 from django.contrib.auth.models import User
-from django.views.generic.base import TemplateView
-from farmers.views import RegistrationView, ActivationView
 from django.views.generic import RedirectView
+from django.views.generic.base import TemplateView
+admin.autodiscover()
+
+from farmers import views
+from farmers.views import RegistrationView, ActivationView
+
+from harvestapi import settings
+
 from password_policies.urls import *
 
-from django.contrib import admin
-admin.autodiscover()
+from rest_framework.routers import DefaultRouter
 
 # Create a router and register our viewsets with it.
 router = DefaultRouter()
