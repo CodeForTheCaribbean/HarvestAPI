@@ -4,12 +4,13 @@
 #don't put migrations in repo
 farmers/migrations/*
 
+#settings file
+harvestapi/settings.py
+
 #local settings file
-agriapi/local_settings.py
+harvestapi/local_settings.py
 
 #virtual environment
-agriapi/local_settings.py
-
 venv
 
 *.pyc
@@ -52,14 +53,3 @@ nosetests.xml
 .project
 .pydevproject
 
-#notes
-notes.txt
-
-#data
-farmers/fixtures/initial_data.json
-farmers.json
-farmers_131205.data
-dumpddata-desktop.json
-farmers_131208.data
-farmers_131208.json
-agriapi/settings.py
