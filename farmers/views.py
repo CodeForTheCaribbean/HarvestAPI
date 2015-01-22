@@ -24,7 +24,7 @@ from farmers.signals import *
 from rest_framework import filters, generics, permissions, renderers, serializers, status, viewsets   
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication, TokenAuthentication 
 from rest_framework.authtoken.models import Token
-from rest_framework.decorators import api_view, link
+from rest_framework.decorators import api_view
 from rest_framework.permissions import IsAdminUser, IsAuthenticated 
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
