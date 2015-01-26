@@ -6,11 +6,15 @@ from django.views.generic.base import TemplateView
 admin.autodiscover()
 
 from farmers import views
-from farmers.views import RegistrationView, ActivationView
+#from farmers.views import *
 
 from harvestapi import settings
 
 from password_policies.urls import *
+
+from registration import views as r_views
+from registration.backends.default import views as backend_r_view
+from registration.backends.default import urls
 
 from rest_framework.routers import DefaultRouter
 
@@ -29,7 +33,7 @@ router.register(r'prices', views.PriceViewSet)
 # Included docs URL to 'swagger' docs
 urlpatterns = patterns('',
     url(r'^home/$',
-        RegistrationView.as_view(),
+        backend_r_view.RegistrationView.as_view(),
         name='registration_register'),
     url(r'^$', RedirectView.as_view(url='/home/')),
     url(r'^data/', include(router.urls)),
@@ -48,30 +52,6 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
-    
-    url(r'^user/activate/complete/$',
-        TemplateView.as_view(template_name='registration/activation_complete.html'),
-        name='registration_activation_complete'),
-    
-    # Activation keys get matched by \w+ instead of the more specific
-    # [a-fA-F0-9]{40} because a bad activation key should still get to the view;
-    # that way it can return a sensible "invalid key" message instead of a
-    # confusing 404.    
-    url(r'^user/activate/(?P<activation_key>\w+)/$',
-        ActivationView.as_view(),
-        name='registration_active'),
-    
-    url(r'^user/register/$',
-        RegistrationView.as_view(),
-        name='registration_register'),
-    
-    url(r'^user/register/complete/#signup$',
-        TemplateView.as_view(template_name='registration/registration_complete.html'),
-        name='registration_complete'),
-    
-    url(r'^register/closed/$',
-        TemplateView.as_view(template_name='registration/registration_closed.html'),
-        name='registration_disallowed'),   
 )
 
 urlpatterns += patterns('',  
