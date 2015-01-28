@@ -101,9 +101,7 @@ INSTALLED_APPS = (
     'rest_framework',
     'rest_framework.authtoken',
     'farmers',
-    'south',
     'rest_framework_swagger',
-    'django_filters',
     'registration',
     'django.contrib.humanize',
     # Uncomment the next line to enable the admin:
