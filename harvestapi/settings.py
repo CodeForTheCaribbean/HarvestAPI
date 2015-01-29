@@ -5,7 +5,6 @@ import os
 env = lambda e, d: environ[e] if environ.has_key(e) else d
 
 DEBUG = True 
-
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -91,7 +90,8 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    os.path.join(os.path.dirname(__file__), 'template').replace('\\','/'),
+    os.path.join(os.path.dirname(__file__), 'templates').replace('\\','/'),
+
 )
 
 INSTALLED_APPS = (
@@ -150,7 +150,9 @@ LOGGING = {
 #added for Heroku
 # Parse database configuration from $DATABASE_URL
 import dj_database_url
+
 DATABASES = {'default': dj_database_url.config(default='postgres://postgres:password@localhost/harvest_api')}
+
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -186,8 +188,6 @@ REST_FRAMEWORK = {
 
 ACCOUNT_ACTIVATION_DAYS = 7 # One-week activation window; you may, of course, use a different value.
 
-REGISTRATION_OPEN = True # If True, users can be able to register
-
 #local settings
 try:
     from local_settings import *
@@ -204,14 +204,3 @@ EMAIL_USE_TLS = True
 # https://warehouse.python.org/project/whitenoise/
 
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
-
-import sys
-if 'test' in sys.argv:
-        DATABASES = {'default': dj_database_url.config(default='postgres://hzlftoiyimauyh:aYDWYR5I1_XknlBmHzL6scoZJX@ec2-54-225-101-124.compute-1.amazonaws.com:5432/d52lm2lo4bpq53')}
-#if manage.py test was called, use test settings
-#if 'test' in sys.argv:
-#	try:
-#		from test_settings import *
-#	except ImportError:
-#		pass
-DEFAULT_FROM_EMAIL = 'no-reply@slashroots.org'
