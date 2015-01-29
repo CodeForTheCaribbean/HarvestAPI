@@ -13,9 +13,6 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-
-
-
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = ['.herokuapp.com']
@@ -77,6 +74,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'password_policies.middleware.PasswordChangeMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -102,21 +100,21 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'rest_framework.authtoken',
+    # 'rest_framework.authtoken',
     'farmers',
-    'south',
     'rest_framework_swagger',
-    'django_filters',
     'registration',
     'django.contrib.humanize',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     'django_filters',
+    'widget_tweaks',
+    'password_policies',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
 
-SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
+SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
@@ -195,12 +193,17 @@ except ImportError:
     pass
 
 EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_HOST_USER = 'app20072053@heroku.com'
-EMAIL_HOST_PASSWORD = 'rvqu8zlp'
+EMAIL_HOST_USER = 'badbruce07'
+EMAIL_HOST_PASSWORD = '?myBlahBlah1?'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
 
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
+DEFAULT_FROM_EMAIL = 'no-reply@slashroots.org'
+
+PASSWORD_RESET_TIMEOUT_DAYS = 3
