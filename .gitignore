@@ -10,11 +10,8 @@
 #don't put migrations in repo
 farmers/migrations/*
 
-#settings file
-harvestapi/settings.py
-
 #local settings file
-harvestapi/local_settings.py
+config/local_settings.py
 
 #virtual environment
 venv

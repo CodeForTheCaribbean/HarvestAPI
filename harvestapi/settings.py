@@ -4,11 +4,11 @@ import os
 # Helper lambda for gracefully degrading environmental variables:
 env = lambda e, d: environ[e] if environ.has_key(e) else d
 
-DEBUG = True 
-TEMPLATE_DEBUG = DEBUG
+DEBUG = bool(os.environ['DEBUG'])
+TEMPLATE_DEBUG = bool(os.environ['TEMPLATE_DEBUG'])
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+    # ('Your Name', 'your_email@example.com'],
 )
 
 MANAGERS = ADMINS
@@ -21,33 +21,33 @@ ALLOWED_HOSTS = ['.herokuapp.com']
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
 # In a Windows environment this must be set to your system time zone.
-TIME_ZONE = 'America/Chicago'
+TIME_ZONE = os.environ['TIME_ZONE']
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = os.environ['LANGUAGE_CODE']
 
-SITE_ID = 1
+SITE_ID = int(os.environ['SITE_ID'])
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
-USE_I18N = True
+USE_I18N = bool(os.environ['USE_I18N'])
 
 # If you set this to False, Django will not format dates, numbers and
 # calendars according to the current locale.
-USE_L10N = True
+USE_L10N = bool(os.environ['USE_L10N'])
 
 # If you set this to False, Django will not use timezone-aware datetimes.
-USE_TZ = True
+USE_TZ = bool(os.environ['USE_TZ'])
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
-MEDIA_ROOT = ''
+MEDIA_ROOT = os.environ['MEDIA_ROOT']
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://example.com/media/", "http://media.example.com/"
-MEDIA_URL = ''
+MEDIA_URL = os.environ['MEDIA_URL']
 
 
 # List of finder classes that know how to find static files in
@@ -59,7 +59,7 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = 'u(dejr^k2v0ys0w093eoni(-_0y#e8b#yn!$d!7bt03oacnfk3'
+SECRET_KEY = os.environ['SECRET_KEY']
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -79,10 +79,10 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'urls'
+ROOT_URLCONF = os.environ['ROOT_URLCONF']
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'harvestapi.wsgi.application'
+WSGI_APPLICATION = os.environ['WSGI_APPLICATION']
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -149,17 +149,17 @@ LOGGING = {
 # Parse database configuration from $DATABASE_URL
 import dj_database_url
 
-DATABASES = {'default': dj_database_url.config(default='postgres://postgres:password@localhost/harvest_api')}
+DATABASES = {'default': dj_database_url.config(default='postgres://' + os.environ['DATABASE_USER'] +
+                                                       ':'+os.environ['DATABASE_PASSWORD'] +
+                                                       '@'+os.environ['DATABASE_HOST']+'/' +
+                                                       os.environ['DATABASE_NAME'])}
 
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-# Allow all host headers
-ALLOWED_HOSTS = ['*']
 
 # Static asset configuration
-import os
 PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = 'staticfiles'
 STATIC_URL = '/static/'
@@ -184,26 +184,19 @@ REST_FRAMEWORK = {
     )
 }
 
-ACCOUNT_ACTIVATION_DAYS = 7 # One-week activation window; you may, of course, use a different value.
+ACCOUNT_ACTIVATION_DAYS = int(os.environ['ACCOUNT_ACTIVATION_DAYS'])
 
-#local settings
-try:
-    from local_settings import *
-except ImportError:
-    pass
-
-EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_HOST_USER = 'badbruce07'
-EMAIL_HOST_PASSWORD = '?myBlahBlah1?'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+EMAIL_HOST = os.environ['EMAIL_HOST']
+EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
+EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
+EMAIL_PORT = int(os.environ['EMAIL_PORT'])
+EMAIL_USE_TLS = bool(os.environ['EMAIL_USE_TLS'])
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+DEFAULT_FROM_EMAIL = os.environ['EMAIL_SENDER']
 
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
 
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
-DEFAULT_FROM_EMAIL = 'no-reply@slashroots.org'
-
-PASSWORD_RESET_TIMEOUT_DAYS = 3
+PASSWORD_RESET_TIMEOUT_DAYS = int(os.environ['PASSWORD_RESET_TIMEOUT_DAYS'])
