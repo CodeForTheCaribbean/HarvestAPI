@@ -149,10 +149,7 @@ LOGGING = {
 # Parse database configuration from $DATABASE_URL
 import dj_database_url
 
-DATABASES = {'default': dj_database_url.config(default='postgres://' + os.environ['DATABASE_USER'] +
-                                                       ':'+os.environ['DATABASE_PASSWORD'] +
-                                                       '@'+os.environ['DATABASE_HOST']+'/' +
-                                                       os.environ['DATABASE_NAME'])}
+DATABASES = {'default': dj_database_url.config(default="'" + os.environ['DATABASE_URL'] + "'")}
 
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
