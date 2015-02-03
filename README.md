@@ -2,6 +2,9 @@
 HarvestAPI
 =======
 
+![cftc](http://slashroots.org/img/cftc.png)
+![srdc](http://slashroots.org/img/srdc.png)
+
 Agricultural API - currently provides Jamaica agriculture data, eg. prices, crops, farms.
 
 Built with Django and REST framework http://django-rest-framework.org/
@@ -9,24 +12,45 @@ Built with Django and REST framework http://django-rest-framework.org/
 A demonstartion of the API is accessible on the web: http://harvestdata.herokuapp.com/
 
 TODO:
+
 * review resources, eg. add 'verified date' field, remove 'farmer_idx' field, etc.
 * document process of getting database copied over to API
 * create resources for prices, livestock
 * finalize the fields that will be exposed and access levels/privacy/permissions
 * work on defining international data standards for crops
 
-#API Documentation: 
+
+##Installation
+This Django project is heavily reliant on Environmental Variables.  To see the various Environment Variables please check out ```config/local_setting_template.ini```.  On your target platform please have ready the following:
+
+*	Postgres Database
+*	SendGrid Account
+*	A target machine (UNIX preferred)
+
+On your target machine setup the environmental variables with the appropriate values (based on your credentials for DB, SendGrid and target machine).
+
+Pull the repository and first do an install using pip:
+
+```pip install -r requirements.txt```
+
+Then run ```python ./manage.py syncdb```. This will setup the database tables for the application.
+
+And presto!  You should be able to start the application using ```python ./manage.py runserver```.
+
+
+
+##API Documentation: 
 - Temporary API Documentation page is here: http://harvestapi.developdigitally.com
 
 -Rationale(Why): 
 Increasingly stakeholders are requesting more agricultural information from the Ministry of Agriculture and Fisheries and the Rural Agricultural Development Authority.
 
-##-Objectives(What): 
+###-Objectives(What): 
 Facilitate secure access to the ABIS and JAMIS data by both internal and external stakeholders. 
 Provide opportunities to software developers to create more agricultural related applications.
 To support and facilitate the fight against praedial larceny by using Information and Communication Technologies(ICT). 
 
-##-Audience(Who): 
+###-Audience(Who): 
 Software developers
 Agricultural stakeholders
 Government stakeholders
@@ -35,7 +59,7 @@ Business interests
 -Where
 Managed cloud based solution
 
-##-How
+###-How
 API accessible online
 Secure levels of access to the data using user roles and API keys
 Procedure (requesting access, etc) 
@@ -44,7 +68,7 @@ Terms of Use
 Managing timely updates of the data(automated/batch)
 Technical explanation of how (document this with RADA tech team)
 
-##API Resources:
+###API Resources:
 Below are the various types of data/resources that the API currently provides.
 Farmers - Listing of farmers in ABIS
 Receipts - Listing of receipt books sold to farmers
@@ -55,9 +79,9 @@ Prices - Listing of crop price data collected by the Ministry of Agriculture and
 
 
 
-##Endpoint/Resources - Field Definitions
+###Endpoint/Resources - Field Definitions
 
-###Farmers
+####Farmers
 | Field Name                        | Data Type | Security Level | Nomenclature    | Field range |
 |-----------------------------------|-----------|----------------|-----------------|-------------|
 | IDX_StakeHolder: int              | INT       |                | farmer_idx      |             |
