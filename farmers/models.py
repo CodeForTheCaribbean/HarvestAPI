@@ -7,6 +7,8 @@ from django.dispatch import receiver
 
 from rest_framework.authtoken.models import Token
 from decimal import Decimal
+from django.utils import timezone
+now = datetime.datetime.now()
 
 
 # @receiver(post_save, sender=get_user_model())
@@ -115,8 +117,8 @@ class Price(models.Model):
     crop_code = models.CharField(max_length=50, default='', null=True)
     units = models.CharField(max_length=50, default='', null=True)
     variety = models.CharField(max_length=50, default='', null=True)
-    batch_date = models.DateField(max_length=50, default='', null=True)
-    published_on = models.DateField(max_length=50, default='', null=True)
+    batch_date = models.DateField('date created', default=now)
+    published_on = models.DateField('date created', default=now)
     extension = models.CharField(max_length=50, default='', null=True)
 
     class Meta:
