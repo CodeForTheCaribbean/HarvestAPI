@@ -1,19 +1,30 @@
-# Blacklisting example
-branches:
-  except:
-    - gh-pages
-
 language: python
+
 python:
   - "2.7"
-env:
-  - DJANGO=1.5.5 DB=postgres
 
-# command to install dependencies
-#install:
-#  - "pip install -r requirements.txt"
+services: postgresql
+
+env:
+  global:
+    - DJANGO_SETTINGS_MODULE="harvestapi.settings"
+    - PIP_USE_MIRRORS=true
+    - BUILD_ON_TRAVIS=true
+  matrix:
+    - DJANGO=1.7 DB=postgres
+
+#commands to install dependencies
+install:
+  - pip install -q Django==$DJANGO
+  - pip install -q -r requirements.txt
+  # - pip install coveralls
 
 before_script:
-  - psql -c 'create database test_harvest_api;' -U postgres
+  - psql -c 'create database travis_ci_test;' -U postgres
+  - export DATABASE_URL='postgres://postgres:password@localhost/harvest_api'
+  - python manage.py syncdb --noinput
+
+#command to run the test suite
 script:
   - python manage.py test
+  # - coverage run manage.py test
