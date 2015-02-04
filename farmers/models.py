@@ -6,6 +6,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 from rest_framework.authtoken.models import Token
+from decimal import Decimal
 
 
 # @receiver(post_save, sender=get_user_model())
@@ -79,7 +80,7 @@ class Crop(models.Model):
 
     crop_name = models.CharField(max_length=100, default='')
     common_name = models.CharField(max_length=30, default='', null=True)
-    estimated_vol = models.DecimalField(max_digits=10, default='', null=True, decimal_places=2)
+    estimated_vol = models.DecimalField(max_digits=10, default=Decimal(0), null=True, decimal_places=2)
     variety = models.CharField(max_length=50, default='', null=True)
     plant_date = models.CharField(max_length=50, default='', null=True)
     count = models.CharField(max_length=50, default='', null=True)
@@ -106,7 +107,7 @@ class Livestock(models.Model):
 class Price(models.Model):
 
     price_id =  models.CharField(max_length=100, null=False, default='', primary_key=True)
-    price  = models.DecimalField(max_digits=10, default='', null=True, decimal_places=2)
+    price  = models.DecimalField(max_digits=10, default=Decimal(0), null=True, decimal_places=2)
     public = models.CharField(max_length=10, default='', null=True)
     price_point = models.CharField(max_length=50, default='', null=True)
     parish = models.CharField(max_length=50, default='', null=True)
