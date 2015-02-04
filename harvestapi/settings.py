@@ -197,3 +197,5 @@ DEFAULT_FROM_EMAIL = os.environ['EMAIL_SENDER']
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 PASSWORD_RESET_TIMEOUT_DAYS = int(os.environ['PASSWORD_RESET_TIMEOUT_DAYS'])
+
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
