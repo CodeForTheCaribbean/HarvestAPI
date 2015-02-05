@@ -1,30 +1,24 @@
 language: python
-
 python:
-  - "2.7"
-
+- '2.7'
 services: postgresql
-
 env:
   global:
-    - DJANGO_SETTINGS_MODULE="harvestapi.settings"
-    - PIP_USE_MIRRORS=true
-    - BUILD_ON_TRAVIS=true
+  - DJANGO_SETTINGS_MODULE="harvestapi.settings"
+  - PIP_USE_MIRRORS=true
+  - BUILD_ON_TRAVIS=true
   matrix:
-    - DJANGO=1.7 DB=postgres
-
-#commands to install dependencies
+  - DJANGO=1.7 DB=postgres
 install:
-  - pip install -q Django==$DJANGO
-  - pip install -q -r requirements.txt
-  # - pip install coveralls
-
+- pip install -q Django==$DJANGO
+- pip install -q -r requirements.txt
 before_script:
-  - psql -c 'create database travis_ci_test;' -U postgres
-  - export DATABASE_URL='postgres://postgres:password@localhost/harvest_api'
-  - python manage.py syncdb --noinput
-
-#command to run the test suite
+- psql -c 'create database travis_ci_test;' -U postgres
+- export DATABASE_URL='postgres://postgres:password@localhost/harvest_api'
+- python manage.py syncdb --noinput
 script:
-  - python manage.py test
-  # - coverage run manage.py test
+- python manage.py test
+notifications:
+  slack:
+    secure: MDbmBLJOX3kAtEts3Zu/QeOaeuABU95Mo2k6I63EGubgQb2B+bNZOK+aGcLEoJNnLJtmPmR5MRMHFC2qxB20zCg4Mxv2P8E1347SklQwL4+78tRPADjhG9PsYy3xkHq8afnkNWdVQASu+JQs0KsZ4DYx3jLUL4Qp0LMoIIksOgk=
+slack: slashroots:1x5Ft8sq81h02xfaW9l5RveK
