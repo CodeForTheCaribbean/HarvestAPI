@@ -6,6 +6,9 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 from rest_framework.authtoken.models import Token
+from decimal import Decimal
+from django.utils import timezone
+now = datetime.datetime.now()
 
 
 # @receiver(post_save, sender=get_user_model())
@@ -79,7 +82,7 @@ class Crop(models.Model):
 
     crop_name = models.CharField(max_length=100, default='')
     common_name = models.CharField(max_length=30, default='', null=True)
-    estimated_vol = models.DecimalField(max_digits=10, default='', null=True, decimal_places=2)
+    estimated_vol = models.DecimalField(max_digits=10, default=Decimal(0), null=True, decimal_places=2)
     variety = models.CharField(max_length=50, default='', null=True)
     plant_date = models.CharField(max_length=50, default='', null=True)
     count = models.CharField(max_length=50, default='', null=True)
@@ -106,7 +109,7 @@ class Livestock(models.Model):
 class Price(models.Model):
 
     price_id =  models.CharField(max_length=100, null=False, default='', primary_key=True)
-    price  = models.DecimalField(max_digits=10, default='', null=True, decimal_places=2)
+    price  = models.DecimalField(max_digits=10, default=Decimal(0), null=True, decimal_places=2)
     public = models.CharField(max_length=10, default='', null=True)
     price_point = models.CharField(max_length=50, default='', null=True)
     parish = models.CharField(max_length=50, default='', null=True)
@@ -114,8 +117,8 @@ class Price(models.Model):
     crop_code = models.CharField(max_length=50, default='', null=True)
     units = models.CharField(max_length=50, default='', null=True)
     variety = models.CharField(max_length=50, default='', null=True)
-    batch_date = models.DateField(max_length=50, default='', null=True)
-    published_on = models.DateField(max_length=50, default='', null=True)
+    batch_date = models.DateField('date created', default=now)
+    published_on = models.DateField('date created', default=now)
     extension = models.CharField(max_length=50, default='', null=True)
 
     class Meta:
