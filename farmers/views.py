@@ -51,6 +51,7 @@ class ReceiptViewSet(viewsets.ModelViewSet):
     This view set automatically provides `list` and `detail` on Receipts.
     """
     queryset = Receipt.objects.all()
+    authentication_classes = (BasicAuthentication, SessionAuthentication, TokenAuthentication)
     permission_classes = (IsAdminUser,)
     serializer_class = ReceiptSerializer
     filter_class = ReceiptFilter
@@ -75,6 +76,7 @@ class FarmViewSet(viewsets.ModelViewSet):
     """
     queryset = Farm.objects.all()
     permission_classes = (IsAuthenticated,)
+    authentication_classes = (BasicAuthentication, SessionAuthentication, TokenAuthentication)
     serializer_class = FarmSerializer
     filter_class = FarmFilter
     filter_backends = (filters.SearchFilter,filters.OrderingFilter,filters.DjangoFilterBackend,)
@@ -100,6 +102,7 @@ class CropViewSet(viewsets.ModelViewSet):
 
     queryset = Crop.objects.all()
     permission_classes = (IsAuthenticated,)
+    authentication_classes = (BasicAuthentication, SessionAuthentication, TokenAuthentication)
     serializer_class = CropSerializer
     filter_class = CropFilter
     filter_backends = (filters.SearchFilter,filters.OrderingFilter,filters.DjangoFilterBackend,)
@@ -123,6 +126,7 @@ class LivestockViewSet(viewsets.ModelViewSet):
 
     queryset = Livestock.objects.all()
     permission_classes = (IsAuthenticated,)
+    authentication_classes = (BasicAuthentication, SessionAuthentication, TokenAuthentication)
     serializer_class = LivestockSerializer
     filter_class = LivestockFilter
     filter_backends = (filters.SearchFilter,filters.OrderingFilter,filters.DjangoFilterBackend,)
@@ -146,6 +150,7 @@ class PriceViewSet(viewsets.ModelViewSet):
 
     queryset = Price.objects.all()
     permission_classes = (IsAuthenticated,)
+    authentication_classes = (BasicAuthentication, SessionAuthentication, TokenAuthentication)
     serializer_class = PriceSerializer
     filter_class = PriceFilter
     filter_backends = (filters.SearchFilter,filters.OrderingFilter,filters.DjangoFilterBackend,)
