@@ -8,7 +8,9 @@ from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 from decimal import Decimal
 from django.utils import timezone
-now = datetime.datetime.now()
+
+def date_handler(obj):
+    return obj.isoformat() if hasattr(obj, 'isoformat') else obj
 
 
 # @receiver(post_save, sender=get_user_model())
@@ -29,7 +31,7 @@ class Farmer(models.Model):
     tel_number = models.CharField(max_length=20, null=True, default='')
     cell_number = models.CharField(max_length=20, null=True, default='')
     verified_status = models.CharField(max_length=3, null=True, default='')
-    dob = models.DateTimeField()
+    dob = models.DateTimeField(null=True)
     agri_activity = models.CharField(max_length=150, null=True, default='')
     owner = models.ForeignKey('auth.User', related_name='farmers', default='1', null=True)
     last_updated = models.DateTimeField(auto_now_add=True, null=True)
@@ -117,8 +119,8 @@ class Price(models.Model):
     crop_code = models.CharField(max_length=50, default='', null=True)
     units = models.CharField(max_length=50, default='', null=True)
     variety = models.CharField(max_length=50, default='', null=True)
-    batch_date = models.DateField('date created', default=now)
-    published_on = models.DateField('date created', default=now)
+    batch_date = models.DateField('date created', auto_now_add=True)
+    published_on = models.DateField('date created', auto_now_add=True)
     extension = models.CharField(max_length=50, default='', null=True)
 
     class Meta:

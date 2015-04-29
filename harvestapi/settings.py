@@ -92,7 +92,7 @@ else:
         'django.middleware.csrf.CsrfViewMiddleware',
         'django.contrib.auth.middleware.AuthenticationMiddleware',
         'django.contrib.messages.middleware.MessageMiddleware',
-        'password_policies.middleware.PasswordChangeMiddleware',
+#        'password_policies.middleware.PasswordChangeMiddleware',
         # Uncomment the next line for simple clickjacking protection:
         # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
     )
@@ -127,12 +127,12 @@ else:
         'django.contrib.admin',
         'django_filters',
         'widget_tweaks',
-        'password_policies',
+#        'password_policies',
         # Uncomment the next line to enable admin documentation:
         # 'django.contrib.admindocs',
     )
 
-    SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
+    SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
 
     # A sample logging configuration. The only tangible logging
     # performed by this configuration is to send an email to
