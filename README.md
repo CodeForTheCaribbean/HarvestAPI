@@ -9,7 +9,9 @@ Agricultural API - currently provides Jamaica agriculture data, eg. prices, crop
 
 Built with Django and REST framework http://django-rest-framework.org/
 
-A demonstartion of the API is accessible on the web: http://harvestdata.herokuapp.com/
+####Update
+We are currrently in the process of moving the API to another technology stack. Additionally, steps 
+are currently underway to integrate this API internally at the Rural Agricultural Development Agency (RADA), Kingston, Jamaica.
 
 TODO:
 
@@ -37,10 +39,6 @@ Then run ```python ./manage.py syncdb```. This will setup the database tables fo
 
 And presto!  You should be able to start the application using ```python ./manage.py runserver```.
 
-
-
-##API Documentation: 
-- Temporary API Documentation page is here: http://harvestapi.developdigitally.com
 
 -Rationale(Why): 
 Increasingly stakeholders are requesting more agricultural information from the Ministry of Agriculture and Fisheries and the Rural Agricultural Development Authority.
